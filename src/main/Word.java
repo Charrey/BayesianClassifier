@@ -31,11 +31,12 @@ public class Word {
         return false;
     }
 
-    public static String[] sanitize(String input) {
+    public static String[] removeNonLetters(String input) {
        return input.replaceAll("[^a-zA-Z ]", "").toLowerCase().split("\\s+");
     }
 
-    public static String flattenToAscii(String string) {
+    public static String[] sanitize(String string) {
+        // Funcion below thanks to David Conrad.
         char[] out = new char[string.length()];
         string = Normalizer.normalize(string, Normalizer.Form.NFD);
         int j = 0;
@@ -43,7 +44,7 @@ public class Word {
             char c = string.charAt(i);
             if (c <= '\u007F') out[j++] = c;
         }
-        return new String(out);
+        return removeNonLetters(new String(out));
     }
 
 }

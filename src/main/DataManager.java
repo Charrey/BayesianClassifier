@@ -202,8 +202,26 @@ public final class DataManager {
             e.printStackTrace();
         }
 
+    }
 
+    public static int getWordcountTrue(){
+        //TODO return total wordcount in true (so not unique words)
+        return 0;
+    }
 
+    public static int getWordcountFalse(){
+        //TODO return total wordcount in false (so not unique words)
+        return 0;
+    }
+
+    public static int getTotalDocumentCount(){
+        //TODO return total documents in trainingsset.
+        return 0;
+    }
+
+    public static int getTotalDocumentTrueCount(){
+        //TODO return total document true to class in trainingset
+        return 0;
     }
 
 
