@@ -18,6 +18,18 @@ public class Word {
         this.falsecount = falsecount;
     }
 
+    public void addCount(boolean c){
+        if(c){
+            truecount++;
+        }else{
+            falsecount++;
+        }
+    }
+
+    public String getXML(){
+        return "<text="+word+"><truec="+truecount+"><falsec="+falsecount+">";
+    }
+
     @Override
     public String toString() {
         return "<text="+word+"><truec="+truecount+"><falsec="+falsecount+">";
@@ -35,7 +47,10 @@ public class Word {
        return input.replaceAll("[^a-zA-Z ]", "").toLowerCase().split("\\s+");
     }
 
-    public static String[] sanitize(String string) {
+    public static String[] sanitize(String s) {
+        //TODO maybe first sanitasion then trimming of spaces.
+        String string = s.replaceAll("\\s+", " "); //deletes double spaces
+        string = string.trim(); //delete leading and trailing spaces
         // Funcion below thanks to David Conrad.
         char[] out = new char[string.length()];
         string = Normalizer.normalize(string, Normalizer.Form.NFD);
@@ -46,6 +61,7 @@ public class Word {
         }
         return removeNonLetters(new String(out));
     }
+
 
 }
 
