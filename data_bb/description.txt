@@ -1,0 +1,2 @@
+# c contains ham mail and nc spam mail
+# data from bb site

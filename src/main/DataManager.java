@@ -12,8 +12,12 @@ public final class DataManager {
     public static List<Word> words = new LinkedList<Word>();
     public static final boolean initialized = initialize();
 
+    private static int totalFalseWordcount = 0, totalTrueWordcount = 0;
+
     private static boolean initialize() {
-        File file = new File("data.xml");
+        //File file = new File("data.xml");
+        File file = new File("output"+File.separator+"data.xml");
+        System.err.println("data file opent: "+file.getAbsolutePath());
         if (!file.exists()) {
             System.err.println("data.xml not present");
             try {
@@ -26,7 +30,8 @@ public final class DataManager {
             return false;
         }
 
-        File meta = new File("meta.xml");
+        //File meta = new File("meta.xml");
+        File meta = new File("output"+File.separator+"meta.xml");
         if (!meta.exists()) {
             System.err.println("meta.xml not present");
             try {
@@ -71,6 +76,7 @@ public final class DataManager {
             index = str.indexOf("<truecount=", end)+"<truecount=".length();
             end = str.indexOf(">", index);
             totaltrueidentitycount = Integer.parseInt(str.substring(index, end));
+            System.err.println("totalcount document: "+totalinstancecount+" totalcount true document: "+totaltrueidentitycount);
         }
 
 
@@ -138,6 +144,8 @@ public final class DataManager {
         if (words.contains(word)) {
             throw new IllegalStateException("Word already present!");
         } else {
+            totalTrueWordcount += word.truecount;
+            totalFalseWordcount += word.falsecount;
             words.add(word);
         }
     }
@@ -148,7 +156,7 @@ public final class DataManager {
        }
 
         for (Word i : words) {
-            if (i.word.equals(Word.sanitize(input))) {
+            if (i.word.equals(Word.sanitize(input)[0])) {
                 return i;
             }
         }
@@ -206,22 +214,22 @@ public final class DataManager {
 
     public static int getWordcountTrue(){
         //TODO return total wordcount in true (so not unique words)
-        return 0;
+        return totalTrueWordcount;
     }
 
     public static int getWordcountFalse(){
         //TODO return total wordcount in false (so not unique words)
-        return 0;
+        return totalFalseWordcount;
     }
 
     public static int getTotalDocumentCount(){
         //TODO return total documents in trainingsset.
-        return 0;
+        return totalinstancecount;
     }
 
     public static int getTotalDocumentTrueCount(){
         //TODO return total document true to class in trainingset
-        return 0;
+        return totaltrueidentitycount;
     }
 
 

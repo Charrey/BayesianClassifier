@@ -13,12 +13,21 @@ public class Builder2 {
     HashMap<String, Word> hashMap = new HashMap<String, Word>();
     public static final boolean deleteSubject = true;
 
+    private int totalDocumentCount = 0, totaltrueDocumentCount = 0;
+
 
     public static void main(String[] args) throws Exception {
-        new Builder2("Data");
+        new Builder2("data_bb");
     }
 
     public Builder2(String path) throws Exception {
+        File outputFolder = new File("output");
+        outputFolder.mkdir();
+        File outputFile = new File(outputFolder, "data.xml");
+        outputFile.createNewFile();
+        File metaFile = new File(outputFolder, "meta.xml");
+        metaFile.createNewFile();
+
         File root = new File(path);
         File[] inroot = root.listFiles();
         if(!checkMapFormat(inroot)){
@@ -31,13 +40,33 @@ public class Builder2 {
         procesMap(mapnC, false);
         System.out.println("Second MAP DONE");
         System.out.println("Writing to xml file");
-        buildXML();
+
+
+        buildXML(outputFile);
+        buildMeta(metaFile);
+
+
     }
 
-    private void buildXML() {
+    private void buildMeta(File metaFile) {
         PrintWriter writer = null;
         try {
-            writer = new PrintWriter("data2.xml", "UTF-8");
+            writer = new PrintWriter(metaFile, "UTF-8");
+            writer.println("<instancecount="+totalDocumentCount+"><truecount="+totaltrueDocumentCount+">");
+            writer.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private void buildXML(File dataFile) {
+        PrintWriter writer = null;
+        try {
+            //writer = new PrintWriter("data2.xml", "UTF-8");
+            writer = new PrintWriter(dataFile, "UTF-8");
             for(Word w : hashMap.values()){
                 writer.println(w.getXML());
             }
@@ -80,6 +109,12 @@ public class Builder2 {
     }
 
     public void procesFile(File file, boolean c){
+        totalDocumentCount ++;
+
+        if(c){
+            totaltrueDocumentCount ++;
+        }
+
         String content = "";
         BufferedReader br = null;
         try {
@@ -94,9 +129,11 @@ public class Builder2 {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         if(deleteSubject){
             content = removeWordSubject(content);
         }
+
         String[] array = Word.sanitize(content);
         for(int i =0; i<array.length; i++){
             Word w = hashMap.get(array[i]);
@@ -110,7 +147,6 @@ public class Builder2 {
                 }else{
                     hashMap.put(array[i], new Word(array[i], 0, 1));
                 }
-
             }
         }
 

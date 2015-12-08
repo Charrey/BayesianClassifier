@@ -44,6 +44,15 @@ public class GUI extends Application {
         HBox borderpannel = new HBox();
         validateButton = new Button("validate");
         validateButton.setFont(f);
+
+        validateButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                double[] result = MathManager.getTrueProbSentece(Word.sanitize(input.getText()));
+                //System.out.println("result: c: "+result[0]+" nc: "+result[1]);
+            }
+        });
+
         agreeButton = new Button("agree");
         agreeButton.setFont(f);
         declineButton = new Button("decline");
@@ -92,6 +101,8 @@ public class GUI extends Application {
         addStat("Description", "C", "not C");
         primaryStage.setScene(new Scene(mainPaine, 1000, 1000));
         primaryStage.show();
+
+        addStat("Documents classfied as", DataManager.getTotalDocumentTrueCount(), DataManager.getTotalDocumentCount()-DataManager.getTotalDocumentTrueCount());
     }
 
     public void addStat(String desc, double C, double nC){

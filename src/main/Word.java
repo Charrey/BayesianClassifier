@@ -43,14 +43,12 @@ public class Word {
         return false;
     }
 
+    /*
     public static String[] removeNonLetters(String input) {
        return input.replaceAll("[^a-zA-Z ]", "").toLowerCase().split("\\s+");
-    }
+    }*/
 
-    public static String[] sanitize(String s) {
-        //TODO maybe first sanitasion then trimming of spaces.
-        String string = s.replaceAll("\\s+", " "); //deletes double spaces
-        string = string.trim(); //delete leading and trailing spaces
+    public static String[] sanitize(String string) {
         // Funcion below thanks to David Conrad.
         char[] out = new char[string.length()];
         string = Normalizer.normalize(string, Normalizer.Form.NFD);
@@ -59,7 +57,11 @@ public class Word {
             char c = string.charAt(i);
             if (c <= '\u007F') out[j++] = c;
         }
-        return removeNonLetters(new String(out));
+        String toReturn = new String(out).replaceAll("[^a-zA-Z ]", "").toLowerCase(); //replaces non letters
+        toReturn = toReturn.replaceAll("\\s+", " "); //deletes double spaces
+        toReturn = toReturn.trim(); //delete leading and trailing spaces
+
+        return toReturn.split("\\s+");
     }
 
 
