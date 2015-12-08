@@ -28,7 +28,7 @@ public class Builder2 {
         File mapnC = getFileByName(inroot, "nc");
         procesMap(mapC, true);
         System.out.println("FIRST MAP DONE");
-        procesMap(mapnC, true);
+        procesMap(mapnC, false);
         System.out.println("Second MAP DONE");
         System.out.println("Writing to xml file");
         buildXML();

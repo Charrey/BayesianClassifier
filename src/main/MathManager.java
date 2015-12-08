@@ -8,9 +8,6 @@ public final class MathManager {
 
     private static final double K = 1;
 
-    public MathManager(){
-
-    }
 
     /**
      *
