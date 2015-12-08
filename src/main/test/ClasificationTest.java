@@ -14,7 +14,7 @@ public class ClasificationTest {
     public static final boolean deleteSubject = true;
 
     public static void main(String[] args) throws Exception {
-        String path = "data_bb";
+        String path = "test";
         File root = new File(path);
         File[] inroot = root.listFiles();
         if(!Builder2.checkMapFormat(inroot)){

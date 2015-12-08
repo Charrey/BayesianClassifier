@@ -49,7 +49,8 @@ public class GUI extends Application {
             @Override
             public void handle(ActionEvent event) {
                 double[] result = MathManager.getTrueProbSentece(Word.sanitize(input.getText()));
-                //System.out.println("result: c: "+result[0]+" nc: "+result[1]);
+                System.out.println("result: c: "+result[0]+" nc: "+result[1]);
+
             }
         });
 
