@@ -1,6 +1,7 @@
 package main.test;
 
 
+import main.DataManager;
 import main.GUI;
 import main.Word;
 
@@ -16,6 +17,8 @@ import java.util.regex.Pattern;
 public class Test {
 
     public static void main(String[] args){
+        System.out.println("trucount: " + DataManager.getWordcountTrue());
+
         System.out.println(getDefaultCharSet());
         System.out.println(Arrays.toString(Word.sanitize("Dit is z'n een Test")));
         System.out.println(Arrays.toString(Word.sanitize("Dït is René Zijn T:e%^&*(st Ë")));

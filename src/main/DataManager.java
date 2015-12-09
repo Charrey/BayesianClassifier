@@ -1,5 +1,6 @@
 package main;
 
+import javax.xml.crypto.Data;
 import java.io.*;
 import java.nio.file.Files;
 import java.util.*;
@@ -9,12 +10,21 @@ import java.util.*;
  */
 public final class DataManager {
 
-    public static List<Word> words = new LinkedList<Word>();
+    public static HashMap<String, Word> words = new HashMap<String, Word>();
     public static final boolean initialized = initialize();
 
-    private static int totalFalseWordcount = 0, totalTrueWordcount = 0;
+    private static int totalFalseWordcount;
+
+    private static int totalTrueWordcount;
+
+    static {
+        System.out.println("Initializing DataManager.");
+    }
 
     private static boolean initialize() {
+        System.err.println("Init van DataManager");
+        totalFalseWordcount = 0;
+        totalTrueWordcount = 0;
         //File file = new File("data.xml");
         File file = new File("output"+File.separator+"data.xml");
         System.err.println("data file opent: "+file.getAbsolutePath());
@@ -122,8 +132,10 @@ public final class DataManager {
             System.exit(1);
             System.err.println("Data.xml corrupt..");
         }
-
-
+        /*
+        System.err.println("Done init DataManager");
+        System.err.println("totalTrueWordCount: "+totalTrueWordcount+" totalFalseWordcount: "+totalFalseWordcount);
+        System.err.println("WordCountTrue: "+DataManager.getWordcountTrue()+" WordCountFalse: "+DataManager.getWordcountFalse());*/
         return true;
     }
 
@@ -141,17 +153,35 @@ public final class DataManager {
     }
 
     public static void add(Word word) {
+        Word w = words.get(word.word);
+        if(w!=null){
+            throw new IllegalStateException("Word already present!");
+        }else{
+            totalTrueWordcount += word.truecount;
+            totalFalseWordcount += word.falsecount;
+            //System.out.println("totalTrueWordCount: "+totalTrueWordcount+" totalFalseWordcount: "+totalFalseWordcount);
+            words.put(word.word, word);
+        }
+
+        /*
         if (words.contains(word)) {
             throw new IllegalStateException("Word already present!");
         } else {
             totalTrueWordcount += word.truecount;
             totalFalseWordcount += word.falsecount;
             words.add(word);
-        }
+        }*/
     }
 
     public static Word getWord(String input) {
-       if (input.contains(" ")) {
+        Word w = words.get(input);
+        if(w==null){
+            return new Word(input, 0, 0);
+        }else{
+            return w;
+        }
+       /*
+        if (input.contains(" ")) {
            throw new IllegalArgumentException("Entered multiple words!");
        }
 
@@ -161,7 +191,7 @@ public final class DataManager {
             }
         }
         Word word = new Word(Word.sanitize(input)[0], 0, 0);
-        return word;
+        return word;*/
     }
 
     public static int getTotalWordCount() {
@@ -169,6 +199,8 @@ public final class DataManager {
     }
 
     public static void updateWords(String string, boolean istrue) {
+        //TODO
+        /*
         for (Word i : words) {
             if (i.word.equals(Word.sanitize(string)[0])) {
                 if (istrue) {
@@ -178,13 +210,14 @@ public final class DataManager {
                 }
                 break;
             }
-        }
+        }*/
     }
 
-    public static Set<Word> getAllWords() {
-        return new HashSet<Word>(words);
+    public static HashMap<String, Word> getAllWords() {
+        return words;
     }
 
+    /*
     public static void saveToDisk() {
         File meta = new File("meta.xml");
         try {
@@ -210,16 +243,18 @@ public final class DataManager {
             e.printStackTrace();
         }
 
-    }
+    }*/
 
     public static int getWordcountTrue(){
         //TODO return total wordcount in true (so not unique words)
-        return totalTrueWordcount;
+        //System.err.println("WordcountTrue: " + totalTrueWordcount);
+        return DataManager.totalTrueWordcount;
     }
 
     public static int getWordcountFalse(){
         //TODO return total wordcount in false (so not unique words)
-        return totalFalseWordcount;
+        //System.err.println("WordcountFalse: "+totalFalseWordcount);
+        return DataManager.totalFalseWordcount;
     }
 
     public static int getTotalDocumentCount(){

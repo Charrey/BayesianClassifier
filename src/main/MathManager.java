@@ -39,11 +39,11 @@ public final class MathManager {
         //probFalseGivenWords += Math.log((DataManager.getTotalDocumentCount() - DataManager.getTotalDocumentTrueCount())/DataManager.getTotalDocumentCount());
         probTrueGivenWords += Math.log(pC);
         probFalseGivenWords += Math.log(pnC);
-        /*
-        System.out.println("Sentence: \""+ Arrays.toString(s)+"\". chance true:"+probTrueGivenWords+" chance false: "+probFalseGivenWords);
-        System.out.println("P(C): "+pC+" P(!C): "+pnC);
-        System.out.println("totalcount document: "+DataManager.getTotalDocumentCount()+" totalcount true document: "+DataManager.getTotalDocumentTrueCount());
-        */
+
+        //System.out.println("Sentence: \""+ Arrays.toString(s)+"\". chance true:"+probTrueGivenWords+" chance false: "+probFalseGivenWords);
+        //System.out.println("P(C): "+pC+" P(!C): "+pnC);
+        //System.out.println("totalcount document: "+DataManager.getTotalDocumentCount()+" totalcount true document: "+DataManager.getTotalDocumentTrueCount());
+
         return new double[]{probTrueGivenWords, probFalseGivenWords};
     }
 
@@ -59,9 +59,9 @@ public final class MathManager {
 
     public static double[] getProbWordGivenClass(String s, int sentenceLength){
         Word word = DataManager.getWord(s);
-        //System.err.println("Word: "+s+" truecount:"+word.truecount+" falsecount: "+word.falsecount);
-        double chanceTrue = (word.truecount + K)/(DataManager.getWordcountTrue()+K*sentenceLength);
-        double chanceFalse = (word.falsecount + K)/(DataManager.getWordcountFalse()+K*sentenceLength);
+        //System.out.println("Word: "+s+" truecount:"+word.truecount+" falsecount: "+word.falsecount+" WordCountTrue: "+DataManager.getWordcountTrue()+" WordCountFalse: "+DataManager.getWordcountFalse());
+        double chanceTrue = ((double)word.truecount + K)/(DataManager.getWordcountTrue()+K*sentenceLength);
+        double chanceFalse = ((double)word.falsecount + K)/(DataManager.getWordcountFalse()+K*sentenceLength);
         //System.out.println(s + " chance true: "+chanceTrue+" chance false: "+chanceFalse);
         return new double[]{chanceTrue, chanceFalse};
     }

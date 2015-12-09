@@ -54,6 +54,21 @@ public class ClasificationTest {
      */
     public static boolean procesFile(File file, boolean c){
         String content = "";
+
+        FileInputStream fis = null;
+        try {
+            fis = new FileInputStream(file);
+            byte[] data = new byte[(int) file.length()];
+            fis.read(data);
+            fis.close();
+            content = new String(data, "UTF-8");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        /*
         BufferedReader br = null;
         try {
             br = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
@@ -66,7 +81,7 @@ public class ClasificationTest {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+        */
         if(deleteSubject){
             content = Builder2.removeWordSubject(content);
         }

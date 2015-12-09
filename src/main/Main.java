@@ -6,7 +6,7 @@ import java.util.Arrays;
 public final class Main {
 
     public static void main(String[] args) {
-        DataManager.saveToDisk();
+        //DataManager.saveToDisk();
         /*while(true) {
             System.out.println(instanceLoader.getNext());
             try {

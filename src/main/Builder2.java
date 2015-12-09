@@ -116,6 +116,8 @@ public class Builder2 {
         }
 
         String content = "";
+
+
         BufferedReader br = null;
         try {
             br = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
