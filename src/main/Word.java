@@ -1,39 +1,58 @@
 package main;
 
 import java.text.Normalizer;
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by Administrator on 25-11-2015.
  */
 public class Word {
 
-    public int falsecount;
-    public int truecount;
-    public String word;
+//    public int falsecount;
+//    public int truecount;
+    private String word;
+//    private List<Integer> counts = new ArrayList<>();
+    private HashMap<String, Integer> counts = new HashMap<>();
 
-    public Word(String word, int truecount, int falsecount) {
+//
+//    public Word(String word, int truecount, int falsecount) {
+//        this.word = word;
+//        this.truecount = truecount;
+//        this.falsecount = falsecount;
+//    }
+
+    public Word(String word, HashMap<String, Integer> map){
         this.word = word;
-        this.truecount = truecount;
-        this.falsecount = falsecount;
+        this.counts = map;
     }
 
-    public void addCount(boolean c){
-        if(c){
-            truecount++;
-        }else{
-            falsecount++;
-        }
+
+    public void addCount(String c){
+//        if(c){
+//            truecount++;
+//        }else{
+//            falsecount++;
+//        }
+        counts.put(c, counts.get(c)+1);
     }
 
     public String getXML(){
-        return "<text="+word+"><truec="+truecount+"><falsec="+falsecount+">";
+        //return "<text="+word+"><truec="+truecount+"><falsec="+falsecount+">";
+        String string = "";
+        string+="<text="+word+">";
+        for(String s:counts.keySet()){
+            string+="<"+s+"="+counts.get(s)+">";
+        }
+        return string;
     }
 
-    @Override
-    public String toString() {
-        return "<text="+word+"><truec="+truecount+"><falsec="+falsecount+">";
-    }
+//    @Override
+//    public String toString() {
+//        return "<text="+word+"><truec="+truecount+"><falsec="+falsecount+">";
+//    }
 
     @Override
     public boolean equals(Object word) {

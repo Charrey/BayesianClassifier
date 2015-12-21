@@ -13,8 +13,10 @@ public class Builder2 {
     HashMap<String, Word> hashMap = new HashMap<String, Word>();
     public static final boolean deleteSubject = true;
 
-    private int totalDocumentCount = 0, totaltrueDocumentCount = 0;
-
+    private int totalDocumentCount = 0;
+//    private HashMap<String, Integer> wordPerClassCount = new HashMap<>();
+    private HashMap<String, Integer> classCount = new HashMap<>();
+    private HashMap<String, Integer> newWordMap = new HashMap<>();
 
     public static void main(String[] args) throws Exception {
         new Builder2("data_bb");
@@ -33,14 +35,23 @@ public class Builder2 {
         if(!checkMapFormat(inroot)){
             throw new Exception("Incorrect Format");
         }
-        File mapC = getFileByName(inroot, "c");
-        File mapnC = getFileByName(inroot, "nc");
-        procesMap(mapC, true);
-        System.out.println("FIRST MAP DONE");
-        procesMap(mapnC, false);
-        System.out.println("Second MAP DONE");
-        System.out.println("Writing to xml file");
+        buildEmptyMaps(inroot);
 
+        // Iterate all maps in root dir
+        for(int i=0; i<inroot.length; i++){
+            if(inroot[i].isDirectory()){
+                procesMap(inroot[i], inroot[i].getName());
+            }
+        }
+
+//        File mapC = getFileByName(inroot, "c");
+//        File mapnC = getFileByName(inroot, "nc");
+//        procesMap(mapC, true);
+//        System.out.println("FIRST MAP DONE");
+//        procesMap(mapnC, false);
+//        System.out.println("Second MAP DONE");
+//        System.out.println("Writing to xml file");
+//
 
         buildXML(outputFile);
         buildMeta(metaFile);
@@ -48,11 +59,27 @@ public class Builder2 {
 
     }
 
+    private void buildEmptyMaps(File[] inroot){
+        for(int i=0; i<inroot.length; i++){
+            if(inroot[i].isDirectory()){
+//                wordPerClassCount.put(inroot[i].getName(), 0);
+                classCount.put(inroot[i].getName(), 0);
+                newWordMap.put(inroot[i].getName(), 0);
+            }
+        }
+    }
+
     private void buildMeta(File metaFile) {
         PrintWriter writer = null;
         try {
+            String s = "";
+            s+="<instancecount="+totalDocumentCount+">";
+            for(String string:classCount.keySet()){
+                s+="<"+string+"="+classCount.get(string)+">";
+            }
             writer = new PrintWriter(metaFile, "UTF-8");
-            writer.println("<instancecount="+totalDocumentCount+"><truecount="+totaltrueDocumentCount+">");
+//            writer.println("<instancecount="+totalDocumentCount+"><truecount="+totaltrueDocumentCount+">");
+            writer.println(s);
             writer.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -89,34 +116,41 @@ public class Builder2 {
     }
 
     public static boolean checkMapFormat(File[] map){
-        boolean c = false, nc = false;
+//        boolean c = false, nc = false;
+//        for(int i=0; i<map.length; i++){
+//            if(map[i].getName().equals("c")){
+//                c = true;
+//            }
+//            if(map[i].getName().equals("nc")){
+//                nc = true;
+//            }
+//        }
+//        return c && nc;
+        int dirCount = 0;
         for(int i=0; i<map.length; i++){
-            if(map[i].getName().equals("c")){
-                c = true;
-            }
-            if(map[i].getName().equals("nc")){
-                nc = true;
+            if(map[i].isDirectory()){
+                dirCount++;
             }
         }
-        return c && nc;
+        return dirCount >= 2;
     }
 
-    public void procesMap(File map, boolean c){
+    public void procesMap(File map, String c){
         File[] m = map.listFiles();
         for(int i = 0; i<m.length; i++){
             procesFile(m[i], c);
         }
     }
 
-    public void procesFile(File file, boolean c){
+    public void procesFile(File file, String c){
         totalDocumentCount ++;
+        classCount.put(c, classCount.get(c)+1);
 
-        if(c){
-            totaltrueDocumentCount ++;
-        }
+//        if(c){
+//            totaltrueDocumentCount ++;
+//        }
 
         String content = "";
-
 
         BufferedReader br = null;
         try {
@@ -126,13 +160,12 @@ public class Builder2 {
                 content += line + " ";
                 //System.out.println(line);
             }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         if(deleteSubject){
+            //TODO better overall function wich deletes multiple words if needed.
             content = removeWordSubject(content);
         }
 
@@ -144,11 +177,12 @@ public class Builder2 {
                 w.addCount(c);
             }else{
                 // Word is not yet in set
-                if(c){
-                    hashMap.put(array[i], new Word(array[i], 1, 0));
-                }else{
-                    hashMap.put(array[i], new Word(array[i], 0, 1));
-                }
+//                if(c){
+//                    hashMap.put(array[i], new Word(array[i], 1, 0));
+//                }else{
+//                    hashMap.put(array[i], new Word(array[i], 0, 1));
+//                }
+                hashMap.put(array[i], new Word(array[i], newWordMap));
             }
         }
 
