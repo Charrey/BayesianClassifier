@@ -79,20 +79,6 @@ public class ClasificationTest {
             e.printStackTrace();
         }
 
-        /*
-        BufferedReader br = null;
-        try {
-            br = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
-            String line;
-            while ((line = br.readLine()) != null) {
-                content += line + " ";
-            }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        */
         if(deleteSubject){
             content = Builder2.removeWordSubject(content);
         }

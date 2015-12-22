@@ -43,13 +43,15 @@ public class DataManager2 {
             String text = word.getString("text");
             JSONArray classes = word.getJSONArray("classes");
             HashMap<String, Integer> map = new HashMap<>();
+            HashMap<String, Integer> doccountMap = new HashMap<>();
             for(int x=0; x<classes.length(); x++){
                 JSONObject obj = classes.getJSONObject(x);
                 String className = obj.getString("name");
                 map.put(className, obj.getInt("count"));
+                doccountMap.put(className, obj.getInt("doccount"));
                 wordcountPerClass.put(className, wordcountPerClass.get(className)+obj.getInt("count"));
             }
-            words.put(text, new Word(text, map));
+            words.put(text, new Word(text, map, doccountMap));
         }
     }
 
@@ -100,8 +102,16 @@ public class DataManager2 {
         return classCount.get(c);
     }
 
+    public int getClassCountExceptClass(String c){
+        return getTotalDocumentCount() - getClassCount(c);
+    }
+
     public int getTotalDocumentCount(){
         return totalDocumentCount;
+    }
+
+    public HashMap<String, Word> getWordList(){
+        return words;
     }
 
     public List<String> getClasses(){

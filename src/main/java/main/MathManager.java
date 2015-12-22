@@ -28,29 +28,14 @@ public final class MathManager {
         List<String> classes = DataManager2.INSTANCE.getClasses();
         DataManager2 manager = DataManager2.INSTANCE;
         HashMap<String, Double> result = new HashMap<>();
-//        System.out.println(classes);
-//        for(String c:classes){
-//            result.put(c, (double)0.0);
-//            //System.out.println(c + " value putted, value of class is: " + result.get(c));
-//        }
-
-        //printChances(result);
-
 
         for(int i=0; i<length; i++){
-//            double[] wordGivenClass = getProbWordGivenClass(s[i], length);
-//            probTrueGivenWords += Math.log(wordGivenClass[0]);
-//            probFalseGivenWords += Math.log(wordGivenClass[1]);
             HashMap<String, Double> map = getProbWordGivenClass(s[i], length, classes, manager);
-            //for(String c:classes){
             for(int x=0;x<classes.size(); x++){
-                //System.out.println("value in result map before: "+result.get(c)+" hashmap keys: "+result.keySet());
                 String c = classes.get(x);
-                //System.out.println(result.get(c));
                 if(result.get(c)!=null) {
                     result.put(c, result.get(c) + Math.log(map.get(c)));
                 }else{
-                    //System.out.println(map.get(c));
                     result.put(c, Math.log(map.get(c)));
                 }
 
@@ -58,23 +43,8 @@ public final class MathManager {
         }
         for(String c:classes){
             double chance = (double)manager.getClassCount(c)/manager.getTotalDocumentCount();
-//            System.out.println("Class: " + c + " chance: " + chance + " classcount: " + manager.getClassCount(c) + " totalcount: chance: "+manager.getTotalDocumentCount());
-//            System.out.println("key: "+c+" value: "+result.get(c));
             result.put(c, result.get(c)+Math.log(chance));
-
         }
-        //printChances(result);
-//        double pC = (double)DataManager.getTotalDocumentTrueCount()/DataManager.getTotalDocumentCount();
-//        double pnC = (double)(DataManager.getTotalDocumentCount() - DataManager.getTotalDocumentTrueCount())/DataManager.getTotalDocumentCount();
-        //probTrueGivenWords += Math.log(main.DataManager.getTotalDocumentTrueCount()/main.DataManager.getTotalDocumentCount());
-        //probFalseGivenWords += Math.log((main.DataManager.getTotalDocumentCount() - main.DataManager.getTotalDocumentTrueCount())/main.DataManager.getTotalDocumentCount());
-//        probTrueGivenWords += Math.log(pC);
-//        probFalseGivenWords += Math.log(pnC);
-
-        //System.out.println("Sentence: \""+ Arrays.toString(s)+"\". chance true:"+probTrueGivenWords+" chance false: "+probFalseGivenWords);
-        //System.out.println("P(C): "+pC+" P(!C): "+pnC);
-        //System.out.println("totalcount document: "+main.DataManager.getTotalDocumentCount()+" totalcount true document: "+main.DataManager.getTotalDocumentTrueCount());
-//        printChances(result);
         return result;
     }
 
@@ -97,23 +67,14 @@ public final class MathManager {
     }
 
     public static HashMap<String, Double> getProbWordGivenClass(String s, int sentenceLength, List<String> classes, DataManager2 manager){
-        //Word word = DataManager.getWord(s);
-        //System.out.println("main.Word: "+s+" truecount:"+word.truecount+" falsecount: "+word.falsecount+" WordCountTrue: "+main.DataManager.getWordcountTrue()+" WordCountFalse: "+main.DataManager.getWordcountFalse());
-
-//        double chanceTrue = ((double)word.truecount + K)/(DataManager.getWordcountTrue()+K*sentenceLength);
-//        double chanceFalse = ((double)word.falsecount + K)/(DataManager.getWordcountFalse()+K*sentenceLength);
-        //System.out.println(s + " chance true: "+chanceTrue+" chance false: "+chanceFalse);
-
-        //return new double[]{chanceTrue, chanceFalse};
         HashMap<String, Double> result = new HashMap<>();
         for(int i = 0; i<classes.size(); i++){
             String c = classes.get(i);
             Word w = manager.getWord(s);
-            System.out.println("count class: "+w.getCountOfClass(c)+" wordcount class: "+manager.getWordcountClass(c)+" sentencelength: "+sentenceLength);
+//            System.out.println("count class: "+w.getCountOfClass(c)+" wordcount class: "+manager.getWordcountClass(c)+" sentencelength: "+sentenceLength);
             double chance = ((double)w.getCountOfClass(c) + K)/(manager.getWordcountClass(c)+K*sentenceLength);
             result.put(c, chance);
         }
-        //printChances(result);
         return result;
     }
 

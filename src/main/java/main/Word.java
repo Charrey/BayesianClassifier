@@ -11,48 +11,67 @@ import java.util.HashMap;
  */
 public class Word {
 
-//    public int falsecount;
-//    public int truecount;
     private String word;
-//    private List<Integer> counts = new ArrayList<>();
     private HashMap<String, Integer> counts = new HashMap<>();
+    private HashMap<String, Integer> doccounts = new HashMap<>();
 
-//
-//    public main.Word(String word, int truecount, int falsecount) {
-//        this.word = word;
-//        this.truecount = truecount;
-//        this.falsecount = falsecount;
-//    }
 
     public Word(String word, HashMap<String, Integer> map){
         this.word = word;
         this.counts = map;
+        for(String c:map.keySet()){
+            doccounts.put(c, 0);
+        }
+    }
+    public Word(String word, HashMap<String, Integer> map, HashMap<String, Integer> doccountMap){
+        this.word = word;
+        this.counts = map;
+        this.doccounts = doccountMap;
     }
 
     public int getCountOfClass(String c){
         return counts.get(c);
     }
 
+    public int getDocCountOfClass(String c){
+        return doccounts.get(c);
+    }
+
+    /**
+     *
+     * @return total amount of documents where this word occurs
+     */
+    public int getTotalDocCount(){
+        int result = 0;
+        for(Integer i:doccounts.values()){
+            result += i;
+        }
+        return result;
+    }
+
+    /**
+     *
+     * @param c class which needs to be neglected in the doccount
+     * @return the amount of documents of not class c where this word occurs.
+     */
+    public int getDocCountNotInClass(String c){
+        return getTotalDocCount()-getCountOfClass(c);
+    }
 
     public void addCount(String c){
-//        if(c){
-//            truecount++;
-//        }else{
-//            falsecount++;
-//        }
         counts.put(c, counts.get(c)+1);
     }
 
-//    public String getXML(){
-//        //return "<text="+word+"><truec="+truecount+"><falsec="+falsecount+">";
-//        String string = "";
-//        string+="<text="+word+">";
-//        for(String s:counts.keySet()){
-//            string+="<"+s+"="+counts.get(s)+">";
-//        }
-//        return string;
-//    }
+    public void addDocCount(String c){
+        doccounts.put(c, doccounts.get(c)+1);
+    }
 
+    /**
+     *
+     * @return json object for the Word object. text string value of the word and contains an array containing per
+     * class: the "name" of the class and the total amount of occurences in all documents "count" and "doccount" the
+     * amount of documents the word occurs in.
+     */
     public JSONObject getJSON(){
         JSONObject main = new JSONObject();
         main.put("text", word);
@@ -61,16 +80,16 @@ public class Word {
             JSONObject c = new JSONObject();
             c.put("name", s);
             c.put("count", counts.get(s));
+            c.put("doccount", doccounts.get(s));
+            if(counts.get(s)<doccounts.get(s)){
+                System.err.println("Word: " + word + " count: " + counts.get(s) + " doccount: " + doccounts.get(s));
+            }
             array.put(c);
         }
         main.put("classes", array);
         return main;
     }
 
-//    @Override
-//    public String toString() {
-//        return "<text="+word+"><truec="+truecount+"><falsec="+falsecount+">";
-//    }
 
     @Override
     public boolean equals(Object word) {
@@ -99,6 +118,35 @@ public class Word {
         toReturn = toReturn.trim(); //delete leading and trailing spaces
 
         return toReturn.split("\\s+");
+    }
+
+    /**
+     *
+     * @param count minimal amount a word needs to be occured in the trainingsset
+     * @return false if word does not occur often enough, otherwise true.
+     */
+    public boolean minimalOccurrence(int count){
+        boolean result = false;
+        for(Integer i:counts.values()){
+            if(i>count){
+                result = true;
+            }
+        }
+        return result;
+    }
+
+    public boolean minimalDocOccurrece(int count){
+        boolean result = false;
+        for(Integer i:doccounts.values()){
+            if(i>count){
+                result = true;
+            }
+        }
+        return result;
+    }
+
+    public String getWord(){
+        return word;
     }
 
 
