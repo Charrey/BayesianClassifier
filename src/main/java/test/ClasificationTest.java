@@ -18,6 +18,12 @@ public class ClasificationTest {
     public static void main(String[] args) {
         featureList = FeatureSelector.getChiWordList(DataManager2.INSTANCE.getWordList());
 
+        List<String> classes = DataManager2.INSTANCE.getClasses();
+        HashMap<String, Integer[]> resultMap = new HashMap<>();
+        for(String c:classes){
+            resultMap.put(c, new Integer[]{0,0});
+        }
+
         String path = "test";
         File root = new File(path);
         File[] inroot = root.listFiles();
@@ -28,13 +34,15 @@ public class ClasificationTest {
         for(int i=0; i<inroot.length; i++){
             if(inroot[i].isDirectory()){
                 String className = inroot[i].getName();
-                int[] result = processMap(inroot[i], className);
-                total[0] += result[0];
-                total[1] += result[1];
+                processMap(inroot[i], className, resultMap);
+//                int[] result = processMap(inroot[i], className);
+//                total[0] += result[0];
+//                total[1] += result[1];
                 //System.out.println("Class: "+className+" correct: "+result[0]+"incorrect: "+result[1]);
             }
         }
-        System.out.println("Total correct: "+total[0]+" total incorrect: "+total[1]);
+        printResult(resultMap);
+        //System.out.println("Total correct: "+total[0]+" total incorrect: "+total[1]);
 //        File mapC = getFileByName(inroot, "c");
 //        File mapnC = getFileByName(inroot, "nc");
 //        System.out.println("Processing first map");
@@ -47,18 +55,30 @@ public class ClasificationTest {
 //        System.out.println("Total nC correct: "+nC[0]+" total nC incorrect: "+nC[1]);
     }
 
-    public static int[] processMap(File map, String c){
+    private static void printResult(HashMap<String, Integer[]> resultMap) {
+        int[] total = new int[]{0,0};
+        for(String c:resultMap.keySet()){
+            Integer[] result = resultMap.get(c);
+            System.out.println("Class: "+c+" correct: "+result[0]+" incorrect: "+result[1]);
+            total[0] += result[0];
+            total[1] += result[1];
+        }
+        System.out.println("Total correct: "+total[0]+" incorrect: "+total[1]);
+    }
+
+    public static void processMap(File map, String c, HashMap<String, Integer[]> resultMap){
         int correct = 0;
         int incorrect = 0;
         File[] files = map.listFiles();
         for(int i = 0; i<files.length; i++){
-            if(procesFile(files[i], c)){
-                correct ++;
-            }else{
-                incorrect ++;
-            }
+//            if(procesFile(files[i], c)){
+//                correct ++;
+//            }else{
+//                incorrect ++;
+//            }
+            procesFile(files[i], c, resultMap);
         }
-        return new int[]{correct, incorrect};
+        //return new int[]{correct, incorrect};
     }
 
     /**
@@ -67,7 +87,7 @@ public class ClasificationTest {
      * @param c class of the file
      * @return true if correct classified
      */
-    public static boolean procesFile(File file, String c){
+    public static void procesFile(File file, String c, HashMap<String, Integer[]> resultMap){
         String content = "";
 
         FileInputStream fis = null;
@@ -87,7 +107,20 @@ public class ClasificationTest {
             content = Builder2.removeWordSubject(content);
         }
 //        return MathManager.getClassification(Word.sanitize(content)).equals(c); //old method
-        return MathManager.getClassification(MathManager.getProbSentence(Word.sanitize(content), featureList)).equals(c);
+//        return MathManager.getClassification(MathManager.getProbSentence(Word.sanitize(content), featureList)).equals(c);
+        boolean result = MathManager.getClassification(Word.sanitize(content)).equals(c); //old method
+        //boolean result = MathManager.getClassification(MathManager.getProbSentence(Word.sanitize(content), featureList)).equals(c);
+        putResultMap(c, resultMap, result);
+    }
+
+    private static void putResultMap(String c, HashMap<String, Integer[]> resultMap, boolean correct){
+        Integer[] currentVal = resultMap.get(c);
+        if(correct){
+            currentVal[0] += 1;
+        }else{
+            currentVal[1] += 1;
+        }
+        resultMap.put(c, currentVal);
     }
 
 
