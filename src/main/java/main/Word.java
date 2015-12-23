@@ -49,6 +49,14 @@ public class Word {
         return result;
     }
 
+    public int getTotalCount(){
+        int result = 0;
+        for(Integer i:counts.values()){
+            result += i;
+        }
+        return result;
+    }
+
     /**
      *
      * @param c class which needs to be neglected in the doccount

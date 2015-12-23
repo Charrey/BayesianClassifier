@@ -1,10 +1,10 @@
 package test;
 
-import main.Builder2;
-import main.MathManager;
-import main.Word;
+import main.*;
 
 import java.io.*;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by René on 8-12-2015.
@@ -13,8 +13,12 @@ public class ClasificationTest {
 
     public static final boolean deleteSubject = true;
 
+    public static HashMap<String, List<Word>> featureList;
+
     public static void main(String[] args) {
-        String path = "testSmall";
+        featureList = FeatureSelector.getChiWordList(DataManager2.INSTANCE.getWordList());
+
+        String path = "test";
         File root = new File(path);
         File[] inroot = root.listFiles();
         if(!Builder2.checkMapFormat(inroot)){
@@ -82,7 +86,8 @@ public class ClasificationTest {
         if(deleteSubject){
             content = Builder2.removeWordSubject(content);
         }
-        return MathManager.getClassification(Word.sanitize(content)).equals(c);
+//        return MathManager.getClassification(Word.sanitize(content)).equals(c); //old method
+        return MathManager.getClassification(MathManager.getProbSentence(Word.sanitize(content), featureList)).equals(c);
     }
 
 

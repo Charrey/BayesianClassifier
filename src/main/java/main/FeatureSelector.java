@@ -2,6 +2,7 @@ package main;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -30,6 +31,7 @@ public class FeatureSelector {
         List<String> classes = DataManager2.INSTANCE.getClasses();
         DataManager2 manager = DataManager2.INSTANCE;
         HashMap<String, List<Word>> result = new HashMap<>();
+        HashSet<Word> amounntWordsSet = new HashSet<>();
         for(String c:classes){
             ArrayList<Word> words = new ArrayList<>();
             int totalDocumentCount = manager.getTotalDocumentCount();
@@ -51,11 +53,20 @@ public class FeatureSelector {
                 int N01 = manager.getClassCount(c) - N11;
                 double chi2 = (double)totalDocumentCount*Math.pow(N11 * N00 - N10 * N01, 2) / ((N11+N01)*(N11+N10)*(N10+N00)*(N01+N00));
                 if(chi2>10.83){
-                    System.err.println("Word found with high enough chi: "+c+" "+w.getWord()+" Chi2: "+chi2);
+                    //words.add(w);
+                    if(w.getCountOfClass(c)==0){
+                        //System.err.println(w.getJSON());
+                    }else{
+                        words.add(w);
+                    }
+                    //System.err.println("Word found with high enough chi: "+c+" "+w.getWord()+" Chi2: "+chi2);
                 }
+
             }
             result.put(c, words);
+            amounntWordsSet.addAll(words);
         }
+        System.out.println("amount of words removed: "+(originalList.values().size()-amounntWordsSet.size()));
         return result;
     }
 }

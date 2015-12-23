@@ -34,6 +34,7 @@ public class Test {
 //        System.out.println(Arrays.toString(Word.sanitize("Dit is z'n een Test")));
 //        System.out.println(Arrays.toString(Word.sanitize("Dït is René Zijn T:e%^&*(st Ë")));
 //        //new File("test.txt");
+        //FeatureSelector.getChiWordList(FeatureSelector.removeUselessWords(DataManager2.INSTANCE.getWordList(), 1));
         FeatureSelector.getChiWordList(DataManager2.INSTANCE.getWordList());
     }
 

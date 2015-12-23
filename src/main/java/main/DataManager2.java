@@ -21,6 +21,7 @@ public class DataManager2 {
     private HashMap<String, Integer> newWordMap = new HashMap<>();
 
     private int totalDocumentCount = 0;
+    private int totalWordCount = 0;
 
 
     public DataManager2(){
@@ -48,6 +49,7 @@ public class DataManager2 {
                 JSONObject obj = classes.getJSONObject(x);
                 String className = obj.getString("name");
                 map.put(className, obj.getInt("count"));
+                totalWordCount += obj.getInt("count");
                 doccountMap.put(className, obj.getInt("doccount"));
                 wordcountPerClass.put(className, wordcountPerClass.get(className)+obj.getInt("count"));
             }
@@ -104,6 +106,10 @@ public class DataManager2 {
 
     public int getClassCountExceptClass(String c){
         return getTotalDocumentCount() - getClassCount(c);
+    }
+
+    public int getTotalWordCount(){
+        return totalWordCount;
     }
 
     public int getTotalDocumentCount(){
