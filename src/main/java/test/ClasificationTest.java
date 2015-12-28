@@ -24,7 +24,7 @@ public class ClasificationTest {
             resultMap.put(c, new Integer[]{0,0});
         }
 
-        String path = "test";
+        String path = "blogs_test";
         File root = new File(path);
         File[] inroot = root.listFiles();
         if(!Builder2.checkMapFormat(inroot)){
@@ -35,24 +35,9 @@ public class ClasificationTest {
             if(inroot[i].isDirectory()){
                 String className = inroot[i].getName();
                 processMap(inroot[i], className, resultMap);
-//                int[] result = processMap(inroot[i], className);
-//                total[0] += result[0];
-//                total[1] += result[1];
-                //System.out.println("Class: "+className+" correct: "+result[0]+"incorrect: "+result[1]);
             }
         }
         printResult(resultMap);
-        //System.out.println("Total correct: "+total[0]+" total incorrect: "+total[1]);
-//        File mapC = getFileByName(inroot, "c");
-//        File mapnC = getFileByName(inroot, "nc");
-//        System.out.println("Processing first map");
-//        int[] C = processMap(mapC, true);
-//        System.out.println("Processing second map");
-//        int[] nC = processMap(mapnC, false);
-//        int[] total = new int[]{C[0]+nC[0], C[1]+nC[1]};
-//        System.out.println("Total correct: "+total[0]+" total incorrect: "+total[1]);
-//        System.out.println("Total C correct: "+C[0]+" total C incorrect: "+C[1]);
-//        System.out.println("Total nC correct: "+nC[0]+" total nC incorrect: "+nC[1]);
     }
 
     private static void printResult(HashMap<String, Integer[]> resultMap) {
@@ -108,8 +93,8 @@ public class ClasificationTest {
         }
 //        return MathManager.getClassification(Word.sanitize(content)).equals(c); //old method
 //        return MathManager.getClassification(MathManager.getProbSentence(Word.sanitize(content), featureList)).equals(c);
-        boolean result = MathManager.getClassification(Word.sanitize(content)).equals(c); //old method
-        //boolean result = MathManager.getClassification(MathManager.getProbSentence(Word.sanitize(content), featureList)).equals(c);
+//        boolean result = MathManager.getClassification(Word.sanitize(content)).equals(c); //old method
+        boolean result = MathManager.getClassification(MathManager.getProbSentence(Word.sanitize(content), featureList)).equals(c);
         putResultMap(c, resultMap, result);
     }
 

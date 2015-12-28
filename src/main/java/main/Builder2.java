@@ -20,7 +20,7 @@ public class Builder2 {
     private HashMap<String, Integer> newWordMap = new HashMap<>();
 
     public static void main(String[] args) throws Exception {
-        new Builder2("data_bb");
+        new Builder2("blogs_bb");
     }
 
     public Builder2(String path) throws Exception {

@@ -66,7 +66,7 @@ public class FeatureSelector {
             result.put(c, words);
             amounntWordsSet.addAll(words);
         }
-        System.out.println("amount of words removed: "+(originalList.values().size()-amounntWordsSet.size()));
+//        System.out.println("amount of words removed: "+(originalList.values().size()-amounntWordsSet.size()));
         return result;
     }
 }
