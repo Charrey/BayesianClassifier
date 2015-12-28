@@ -112,7 +112,7 @@ public class Word {
        return input.replaceAll("[^a-zA-Z ]", "").toLowerCase().split("\\s+");
     }*/
 
-    public static String[] sanitize(String string) {
+    public static String sanitizeString(String string){
         // Funcion below thanks to David Conrad.
         char[] out = new char[string.length()];
         string = Normalizer.normalize(string, Normalizer.Form.NFD);
@@ -125,7 +125,23 @@ public class Word {
         toReturn = toReturn.replaceAll("\\s+", " "); //deletes double spaces
         toReturn = toReturn.trim(); //delete leading and trailing spaces
 
-        return toReturn.split("\\s+");
+        return toReturn;
+    }
+
+    public static String[] sanitize(String string) {
+//        // Funcion below thanks to David Conrad.
+//        char[] out = new char[string.length()];
+//        string = Normalizer.normalize(string, Normalizer.Form.NFD);
+//        int j = 0;
+//        for (int i = 0, n = string.length(); i < n; ++i) {
+//            char c = string.charAt(i);
+//            if (c <= '\u007F') out[j++] = c;
+//        }
+//        String toReturn = new String(out).replaceAll("[^a-zA-Z ]", "").toLowerCase(); //replaces non letters
+//        toReturn = toReturn.replaceAll("\\s+", " "); //deletes double spaces
+//        toReturn = toReturn.trim(); //delete leading and trailing spaces
+
+        return sanitizeString(string).split("\\s+");
     }
 
     /**

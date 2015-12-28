@@ -11,11 +11,11 @@ import java.util.List;
 public class FeatureSelector {
 
 
-    public static HashMap<String, Word> removeUselessWords(HashMap<String, Word> originalList, int minnimumOccurence){
+    public static HashMap<String, Word> removeUselessWords(HashMap<String, Word> originalList, int minnimumOccurence, int minimumDocumentOccurence){
         HashMap<String, Word> result = new HashMap<>();
         result.putAll(originalList);
         for(String s:originalList.keySet()){
-            if(!originalList.get(s).minimalOccurrence(minnimumOccurence)){
+            if(!originalList.get(s).minimalOccurrence(minnimumOccurence)||!originalList.get(s).minimalDocOccurrece(minimumDocumentOccurence)){
                 result.remove(s);
             }
         }
