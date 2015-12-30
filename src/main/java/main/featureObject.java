@@ -9,12 +9,20 @@ public class featureObject {
 
     private boolean useChi;
     private int minimalOccurence, minimalDocumentOccurence;
-
-
-    public featureObject(boolean useChi, int minimalOccurence, int minimalDocumentOccurence){
+    private double K;
+    /**
+     *
+     * @param useChi if chi square featureselection needs to be used
+     * @param minimalOccurence the minimal amount of times the words needs to occure in the trainingsset in order to
+     *                         take into account.
+     * @param minimalDocumentOccurence the minimal amount of documents the word needs to occur in order to take this
+     *                                 word into account.
+     */
+    public featureObject(boolean useChi, int minimalOccurence, int minimalDocumentOccurence, double K){
         this.useChi = useChi;
         this.minimalOccurence = minimalOccurence;
         this.minimalDocumentOccurence = minimalDocumentOccurence;
+        this.K = K;
     }
 
     public boolean getUseChi() {
@@ -29,7 +37,7 @@ public class featureObject {
         return minimalDocumentOccurence;
     }
 
-    public String getClassification(String[] document, double K){
+    public String getClassification(String[] document){
         HashMap<String, Word> map = DataManager2.INSTANCE.getWordList();
         FeatureSelector.removeUselessWords(map, minimalOccurence, minimalDocumentOccurence);
         if(useChi){

@@ -12,13 +12,19 @@ public final class MathManager {
 
     //private static final double K = 1;
 
-
-    public static String getClassificationOfDocument(String document, featureObject obj, List<String> toIgnore, double K){
+    /**
+     * THE function of getting the classification of a document. This function also gives the option to use featureselection.
+     * @param document the document needed to be classified
+     * @param obj the featureobject, @see featureObject for further details
+     * @param toIgnore a list of words need to be ignored in the document (NOTION: words are unsanitized).
+     * @return the class according to the classifier.
+     */
+    public static String getClassificationOfDocument(String document, featureObject obj, List<String> toIgnore){
         String[] array = deleteWordsFromArray(Word.sanitizeString(document), toIgnore).split("\\s+");
-        return obj.getClassification(array, K);
+        return obj.getClassification(array);
     }
 
-    private static String deleteWordsFromArray(String doc, List<String> toDelete){
+    public static String deleteWordsFromArray(String doc, List<String> toDelete){
         String result = doc;
         for(String string:toDelete){
             String regex = "\\s*\\b"+string+"\\b\\s*";
@@ -139,7 +145,6 @@ public final class MathManager {
         DataManager2 manager = DataManager2.INSTANCE;
         List<String> sentenceList = Arrays.asList(s);
         int length = s.length;
-
 
         for(String c :classes){
             List<Word> featureList = featuresPerClass.get(c);

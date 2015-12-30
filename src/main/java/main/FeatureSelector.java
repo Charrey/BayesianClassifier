@@ -10,7 +10,13 @@ import java.util.List;
  */
 public class FeatureSelector {
 
-
+    /**
+     *
+     * @param originalList map of the wordlist (string value of the Word and corresponding Word object as value).
+     * @param minnimumOccurence minimal occurences a word needs to have in the trainingsset, -1 if needed to be neglected
+     * @param minimumDocumentOccurence minimal count of documents a word needs occur in the trainingsset, -1 if needed to be neglected
+     * @return what is left of the original list after the filtering.
+     */
     public static HashMap<String, Word> removeUselessWords(HashMap<String, Word> originalList, int minnimumOccurence, int minimumDocumentOccurence){
         HashMap<String, Word> result = new HashMap<>();
         result.putAll(originalList);
@@ -61,7 +67,6 @@ public class FeatureSelector {
                     }
                     //System.err.println("Word found with high enough chi: "+c+" "+w.getWord()+" Chi2: "+chi2);
                 }
-
             }
             result.put(c, words);
             amounntWordsSet.addAll(words);

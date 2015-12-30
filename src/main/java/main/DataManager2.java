@@ -6,6 +6,7 @@ import org.json.JSONObject;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -32,8 +33,6 @@ public class DataManager2 {
         }
         processMeta(meta);
         processData(data);
-
-
         INSTANCE = this;
     }
 
@@ -66,9 +65,7 @@ public class DataManager2 {
             classCount.put(c.getString("name"), c.getInt("count"));
             wordcountPerClass.put(c.getString("name"), 0);
             newWordMap.put(c.getString("name"), 0);
-
         }
-
     }
 
     public static String readFile(File file){
@@ -92,8 +89,41 @@ public class DataManager2 {
         if(w!=null){
             return w;
         }else{
-            return new Word(word, newWordMap);
+            return new Word(word, getNewNewWordMap());
         }
+    }
+
+    /**
+     * The feedback element in the classifier.
+     * @param document the document needed to be added to the trainingsset
+     * @param c the corresponding class of the docuement
+     * @param writeToDisk if the trainingsset needs to be written back to the output files.
+     */
+    public void addDocumentToSet(String[] document, String c, boolean writeToDisk){
+        for(int i=0; i<document.length; i++){
+            Word w = words.get(document[i]);
+            if(w==null){
+                w = new Word(document[i], getNewNewWordMap());
+            }
+            w.addCount(c);
+            w.addDocCount(c);
+        }
+        wordcountPerClass.put(c, wordcountPerClass.get(c)+document.length);
+        classCount.put(c, classCount.get(c)+1);
+        if(writeToDisk){
+            Builder2.Build(words, classCount, totalDocumentCount);
+        }
+    }
+
+    /**
+     * function that looks stupid and exessive, but this takes care of the fact that java works with pointers to objects
+     * if you assign a new object (no new object is created, what is this case should happen)
+     * @return the new newWordMap containing all the classes with value 0.
+     */
+    private HashMap<String, Integer> getNewNewWordMap(){
+        HashMap<String, Integer> map = new HashMap<>();
+        map.putAll(newWordMap);
+        return map;
     }
 
     public int getWordcountClass(String c){

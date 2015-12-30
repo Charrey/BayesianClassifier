@@ -2,7 +2,9 @@ package test;
 
 import main.*;
 
+import javax.sound.midi.SysexMessage;
 import java.io.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -13,28 +15,66 @@ public class ClasificationTest {
 
     public static final boolean deleteSubject = true;
 
-    public static HashMap<String, List<Word>> featureList;
 
     public static void main(String[] args) {
-        featureList = FeatureSelector.getChiWordList(DataManager2.INSTANCE.getWordList());
+        featureObject noFeatureK1 = new featureObject(false, -1, -1, 1);
+        featureObject noFeatureKhalf = new featureObject(false, -1, -1, 0.5);
+        featureObject removeUncommon = new featureObject(false, 2, 2, 1);
+        featureObject useChi = new featureObject(true, -1, -1, 1);
+        featureObject useChiRemoveUncommon = new featureObject(true, 2, 2, 1);
 
+        List<String> toDeleteMail = new ArrayList<>();
+        toDeleteMail.add("Subject:");
+        new Builder2("mail_bb", toDeleteMail);
+        System.out.println("Results mail:");
+        procesTestMap("mail_test", noFeatureK1);
+        println();
+        procesTestMap("mail_test", noFeatureKhalf);
+        println();
+        procesTestMap("mail_test", removeUncommon);
+        println();
+        procesTestMap("mail_test", useChi);
+        println();
+        procesTestMap("mail_test", useChiRemoveUncommon);
+
+        System.out.println("");
+        System.out.println("");
+        new Builder2("blogs_bb", null);
+        new DataManager2();
+        System.out.println("Results blogs:");
+        procesTestMap("blogs_test", noFeatureK1);
+        println();
+        procesTestMap("blogs_test", noFeatureKhalf);
+        println();
+        procesTestMap("blogs_test", removeUncommon);
+        println();
+        procesTestMap("blogs_test", useChi);
+        println();
+        procesTestMap("blogs_test", useChiRemoveUncommon);
+
+
+    }
+
+    private static void println(){
+        System.out.println("-----------------------------------------");
+    }
+
+    private static void procesTestMap(String rootPath, featureObject featureobj){
         List<String> classes = DataManager2.INSTANCE.getClasses();
         HashMap<String, Integer[]> resultMap = new HashMap<>();
         for(String c:classes){
             resultMap.put(c, new Integer[]{0,0});
         }
-
-        String path = "blogs_test";
-        File root = new File(path);
+        File root = new File(rootPath);
         File[] inroot = root.listFiles();
         if(!Builder2.checkMapFormat(inroot)){
             throw new IllegalStateException("Incorrect Format");
         }
-        int[] total = new int[2];
+
         for(int i=0; i<inroot.length; i++){
             if(inroot[i].isDirectory()){
                 String className = inroot[i].getName();
-                processMap(inroot[i], className, resultMap);
+                processMap(inroot[i], className, resultMap, featureobj);
             }
         }
         printResult(resultMap);
@@ -51,19 +91,11 @@ public class ClasificationTest {
         System.out.println("Total correct: "+total[0]+" incorrect: "+total[1]);
     }
 
-    public static void processMap(File map, String c, HashMap<String, Integer[]> resultMap){
-        int correct = 0;
-        int incorrect = 0;
+    public static void processMap(File map, String c, HashMap<String, Integer[]> resultMap, featureObject featureobj){
         File[] files = map.listFiles();
         for(int i = 0; i<files.length; i++){
-//            if(procesFile(files[i], c)){
-//                correct ++;
-//            }else{
-//                incorrect ++;
-//            }
-            procesFile(files[i], c, resultMap);
+            procesFile(files[i], c, resultMap, featureobj);
         }
-        //return new int[]{correct, incorrect};
     }
 
     /**
@@ -72,7 +104,7 @@ public class ClasificationTest {
      * @param c class of the file
      * @return true if correct classified
      */
-    public static void procesFile(File file, String c, HashMap<String, Integer[]> resultMap){
+    public static void procesFile(File file, String c, HashMap<String, Integer[]> resultMap, featureObject featureobj){
         String content = "";
 
         FileInputStream fis = null;
@@ -88,13 +120,11 @@ public class ClasificationTest {
             e.printStackTrace();
         }
 
-        if(deleteSubject){
-            content = Builder2.removeWordSubject(content);
-        }
 //        return MathManager.getClassification(Word.sanitize(content)).equals(c); //old method
 //        return MathManager.getClassification(MathManager.getProbSentence(Word.sanitize(content), featureList)).equals(c);
 //        boolean result = MathManager.getClassification(Word.sanitize(content)).equals(c); //old method
-        boolean result = MathManager.getClassification(MathManager.getProbSentence(Word.sanitize(content), featureList)).equals(c);
+        //boolean result = MathManager.getClassification(MathManager.getProbSentence(Word.sanitize(content), featureList, 1)).equals(c);
+        boolean result = featureobj.getClassification(Word.sanitize(content)).equals(c);
         putResultMap(c, resultMap, result);
     }
 

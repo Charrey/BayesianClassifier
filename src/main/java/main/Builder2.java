@@ -4,8 +4,10 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 
 /**
  * Created by René Boschma on 7-12-2015.
@@ -13,41 +15,73 @@ import java.util.HashSet;
 public class Builder2 {
 
     HashMap<String, Word> hashMap = new HashMap<String, Word>();
-    public static final boolean deleteSubject = true;
+    public boolean deleteSubject = false;
+    private List<String> toDelete;
 
     private int totalDocumentCount = 0;
     private HashMap<String, Integer> classCount = new HashMap<>();
     private HashMap<String, Integer> newWordMap = new HashMap<>();
 
-    public static void main(String[] args) throws Exception {
-        new Builder2("blogs_bb");
+
+
+    public Builder2(String path, List<String> toBeDeleted){
+        try {
+            File outputFolder = new File("output");
+            outputFolder.mkdir();
+            File outputFile = new File(outputFolder, "data.xml");
+            outputFile.createNewFile();
+
+            File metaFile = new File(outputFolder, "meta.xml");
+            metaFile.createNewFile();
+
+
+            if(toBeDeleted!=null){
+                deleteSubject = true;
+                this.toDelete = toBeDeleted;
+            }
+
+            File root = new File(path);
+            File[] inroot = root.listFiles();
+            if(!checkMapFormat(inroot)){
+                throw new IllegalStateException("Incorrect Format");
+            }
+            buildEmptyMaps(inroot);
+
+            // Iterate all maps in root dir
+            for(int i=0; i<inroot.length; i++){
+                if(inroot[i].isDirectory()){
+                    procesMap(inroot[i], inroot[i].getName());
+                }
+            }
+
+            buildXML(outputFile, hashMap);
+            buildMeta(metaFile, classCount, totalDocumentCount);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    public Builder2(String path) throws Exception {
-        File outputFolder = new File("output");
-        outputFolder.mkdir();
-        File outputFile = new File(outputFolder, "data.xml");
-        outputFile.createNewFile();
-        File metaFile = new File(outputFolder, "meta.xml");
-        metaFile.createNewFile();
 
-        File root = new File(path);
-        File[] inroot = root.listFiles();
-        if(!checkMapFormat(inroot)){
-            throw new Exception("Incorrect Format");
+    /**
+     * builds the files to the output folder
+     * @param hashMap containing as key the string value of the Word and as value the coresponding Word object
+     * @param classCount map containing the name of the class with as value the total document occurences of the class
+     * @param totalDocumentCount total documents in the trainingsset
+     */
+    public static void Build(HashMap<String, Word> hashMap, HashMap<String, Integer> classCount, int totalDocumentCount){
+        try {
+            File outputFolder = new File("output");
+            outputFolder.mkdir();
+            File outputFile = new File(outputFolder, "data.xml");
+            outputFile.createNewFile();
+            File metaFile = new File(outputFolder, "meta.xml");
+            metaFile.createNewFile();
+
+            buildMeta(metaFile, classCount, totalDocumentCount);
+            buildXML(outputFile, hashMap);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        buildEmptyMaps(inroot);
-
-        // Iterate all maps in root dir
-        for(int i=0; i<inroot.length; i++){
-            if(inroot[i].isDirectory()){
-                procesMap(inroot[i], inroot[i].getName());
-            }
-        }
-
-        buildXML(outputFile);
-        buildMeta(metaFile);
-
 
     }
 
@@ -61,7 +95,7 @@ public class Builder2 {
         }
     }
 
-    private void buildMeta(File metaFile) {
+    public static void buildMeta(File metaFile,  HashMap<String, Integer> classCount, int totalDocumentCount) {
         PrintWriter writer = null;
         try {
             JSONObject obj = new JSONObject();
@@ -83,7 +117,7 @@ public class Builder2 {
 
     }
 
-    private void buildXML(File dataFile) {
+    public static void buildXML(File dataFile,  HashMap<String, Word> hashMap) {
         PrintWriter writer = null;
         try {
             //writer = new PrintWriter("data2.xml", "UTF-8");
@@ -144,8 +178,7 @@ public class Builder2 {
         }
 
         if(deleteSubject){
-            //TODO better overall function wich deletes multiple words if needed.
-            content = removeWordSubject(content);
+            MathManager.deleteWordsFromArray(content, toDelete);
         }
 
         String[] array = Word.sanitize(content);
