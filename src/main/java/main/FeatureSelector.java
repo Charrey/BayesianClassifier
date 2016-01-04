@@ -1,9 +1,6 @@
 package main;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by René Boschma on 22-12-2015.
@@ -33,7 +30,7 @@ public class FeatureSelector {
      * @param originalList all words in the trainingsset with the text as key and word object as value
      * @return list of all words per class which need to be taken into account acording to the chi2 test.
      */
-    public static HashMap<String, List<Word>> getChiWordList(HashMap<String, Word> originalList){
+    public static HashMap<String, List<Word>> getChiWordListOwnIdea(HashMap<String, Word> originalList){
         List<String> classes = DataManager2.INSTANCE.getClasses();
         DataManager2 manager = DataManager2.INSTANCE;
         HashMap<String, List<Word>> result = new HashMap<>();
@@ -58,6 +55,7 @@ public class FeatureSelector {
                 int N00 = manager.getClassCountExceptClass(c) - N10;
                 int N01 = manager.getClassCount(c) - N11;
                 double chi2 = (double)totalDocumentCount*Math.pow(N11 * N00 - N10 * N01, 2) / ((N11+N01)*(N11+N10)*(N10+N00)*(N01+N00));
+                System.out.println(chi2);
                 if(chi2>10.83){
                     //words.add(w);
                     if(w.getCountOfClass(c)==0){
@@ -68,11 +66,12 @@ public class FeatureSelector {
                     //System.err.println("Word found with high enough chi: "+c+" "+w.getWord()+" Chi2: "+chi2);
                 }
             }
-            //TODO alst goed is zijn lijsten gelijk 1 woordenlijst dus maken, ook met 0 meerekenen.
             result.put(c, words);
             amounntWordsSet.addAll(words);
         }
 //        System.out.println("amount of words removed: "+(originalList.values().size()-amounntWordsSet.size()));
         return result;
     }
+
+    
 }

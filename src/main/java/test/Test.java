@@ -8,9 +8,8 @@ import main.FeatureSelector;
 import main.Word;
 
 import java.io.*;
-import java.text.Normalizer;
-import java.util.Arrays;
-import java.util.regex.Pattern;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by René Boschma on 2-12-2015.
@@ -34,8 +33,19 @@ public class Test {
 //        System.out.println(Arrays.toString(Word.sanitize("Dit is z'n een Test")));
 //        System.out.println(Arrays.toString(Word.sanitize("Dït is René Zijn T:e%^&*(st Ë")));
 //        //new File("test.txt");
-        //FeatureSelector.getChiWordList(FeatureSelector.removeUselessWords(DataManager2.INSTANCE.getWordList(), 1));
-        FeatureSelector.getChiWordList(DataManager2.INSTANCE.getWordList());
+        //FeatureSelector.getChiWordListOwnIdea(FeatureSelector.removeUselessWords(DataManager2.INSTANCE.getWordList(), 1));
+        //FeatureSelector.getChiWordListOwnIdea(DataManager2.INSTANCE.getWordList());
+//
+//        HashMap<String, List<Word>> test = FeatureSelector.getChiWordListOwnIdea(DataManager2.INSTANCE.getWordList());
+//        System.out.println("Words in trainignsset:" +DataManager2.INSTANCE.getWordList().size());
+//        for(String c:test.keySet()){
+//            for(String x:test.keySet()){
+//                if(!c.equals(x)){
+//                    System.out.println("list are equal: "+test.get(c).equals(test.get(x)));
+//                    System.out.println(test.get(c).size() + " "+test.get(x).size());
+//                }
+//            }
+//        }
     }
 
 

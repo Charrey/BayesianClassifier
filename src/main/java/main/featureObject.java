@@ -41,7 +41,7 @@ public class featureObject {
         HashMap<String, Word> map = DataManager2.INSTANCE.getWordList();
         FeatureSelector.removeUselessWords(map, minimalOccurence, minimalDocumentOccurence);
         if(useChi){
-            return MathManager.getClassification(MathManager.getProbSentence(document, FeatureSelector.getChiWordList(map), K));
+            return MathManager.getClassification(MathManager.getProbSentence(document, FeatureSelector.getChiWordListOwnIdea(map), K));
         }else{
             return MathManager.getClassification(MathManager.getProbSentenceFeatureList(document, map, K));
         }
