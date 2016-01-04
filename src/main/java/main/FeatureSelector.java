@@ -68,6 +68,7 @@ public class FeatureSelector {
                     //System.err.println("Word found with high enough chi: "+c+" "+w.getWord()+" Chi2: "+chi2);
                 }
             }
+            //TODO alst goed is zijn lijsten gelijk 1 woordenlijst dus maken, ook met 0 meerekenen.
             result.put(c, words);
             amounntWordsSet.addAll(words);
         }
