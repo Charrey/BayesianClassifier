@@ -159,45 +159,26 @@ public final class MathManager {
             double probWords = 0; // = P(Words)
             int count = 0;
 
-//            for(Word word : featureList){
-//                // calculating P(Words|C=c) for each word in the document and the featureset per class
-//                if(sentenceList.contains(word.getWord())){
-//                    double probWordGivenClass = getProbWordGivenClass(word, length, c, manager, K);
-//                    if(probWordGivenClass==0){
-//                        System.err.println("Prob of word: "+word.getWord()+" in class: "+c+" is zero "+word.getJSON());
-//                    }
-//                    if(result.get(c)!=null) {
-//                        result.put(c, result.get(c) + Math.log(probWordGivenClass));
-//                    }else{
-//                        result.put(c, Math.log(probWordGivenClass));
-//                    }
-//                    count++;
-//                    double probWord = getProbWord(word, manager);
-////                System.out.println(probWord);
-//                    probWords += Math.log(probWord);
-//                }
-//
-//            }
-
-            for(String word:sentenceList){
-                Word w = manager.getWord(word);
-                if(!featureList.contains(w)){
-                    w = new Word(word);
-                }
-                double probWordGivenClass = getProbWordGivenClass(w, length, c, manager, K);
-                if(probWordGivenClass==0){
-                    System.err.println("Prob of word: "+w.getWord()+" in class: "+c+" is zero "+w.getJSON());
-                }
-                if(result.get(c)!=null) {
-                    result.put(c, result.get(c) + Math.log(probWordGivenClass));
-                }else{
-                    result.put(c, Math.log(probWordGivenClass));
-                }
-                count++;
-                double probWord = getProbWord(w, manager);
+            for(Word word : featureList){
+                // calculating P(Words|C=c) for each word in the document and the featureset per class
+                if(sentenceList.contains(word.getWord())){
+                    double probWordGivenClass = getProbWordGivenClass(word, length, c, manager, K);
+                    if(probWordGivenClass==0){
+                        System.err.println("Prob of word: "+word.getWord()+" in class: "+c+" is zero "+word.getJSON());
+                    }
+                    if(result.get(c)!=null) {
+                        result.put(c, result.get(c) + Math.log(probWordGivenClass));
+                    }else{
+                        result.put(c, Math.log(probWordGivenClass));
+                    }
+                    count++;
+                    double probWord = getProbWord(word, manager);
 //                System.out.println(probWord);
-                probWords += Math.log(probWord);
+                    probWords += Math.log(probWord);
+                }
+
             }
+
 
 
 
