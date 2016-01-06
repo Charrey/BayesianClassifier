@@ -18,6 +18,7 @@ public class ClasificationTest {
 
     public static void main(String[] args) {
         featureObject noFeatureK1 = new featureObject(false, -1, -1, 1, -1, false);
+        featureObject noFeatureK1DeleteStop = new featureObject(false, -1, -1, 1, -1, true);
         featureObject noFeatureKhalf = new featureObject(false, -1, -1, 0.5, -1, false);
         featureObject removeUncommon = new featureObject(false, 2, 2, 1, -1, false);
         featureObject useChi = new featureObject(false, -1, -1, 1, 0, false);
@@ -31,6 +32,8 @@ public class ClasificationTest {
         new Builder2("mail_bb", toDeleteMail);
         System.out.println("Results mail:");
         procesTestMap("mail_test", noFeatureK1);
+        println();
+        procesTestMap("mail_test", noFeatureK1DeleteStop);
         println();
         procesTestMap("mail_test", noFeatureKhalf);
         println();
@@ -52,6 +55,8 @@ public class ClasificationTest {
         new DataManager2();
         System.out.println("Results blogs:");
         procesTestMap("blogs_test", noFeatureK1);
+        println();
+        procesTestMap("blogs_test", noFeatureK1DeleteStop);
         println();
         procesTestMap("blogs_test", noFeatureKhalf);
         println();

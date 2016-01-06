@@ -32,9 +32,11 @@ public final class MathManager {
 
     public static String deleteWordsFromArray(String doc, List<String> toDelete){
         String result = doc;
-        for(String string:toDelete){
-            String regex = "\\s*\\b"+string+"\\b\\s*";
-            result = result.replaceAll(regex, "");
+        if(toDelete!=null) {
+            for (String string : toDelete) {
+                String regex = "\\s*\\b" + string + "\\b\\s*";
+                result = result.replaceAll(regex, "");
+            }
         }
         return result;
     }

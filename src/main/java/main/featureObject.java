@@ -7,7 +7,7 @@ import java.util.HashMap;
  */
 public class featureObject {
 
-    private boolean useNonBayesChi;
+    private boolean useNonBayesChi, deleteStopWords;
     private int minimalOccurence, minimalDocumentOccurence, useChi;
     private double K;
     /**
@@ -32,12 +32,17 @@ public class featureObject {
      *               >0 for using the useChi highest amount of words per class. Per class usChi amount of words gets selected
      *                  and these will be used for determining the class.
      */
-    public featureObject(boolean useNonBayesChi, int minimalOccurence, int minimalDocumentOccurence, double K, int useChi){
+    public featureObject(boolean useNonBayesChi, int minimalOccurence, int minimalDocumentOccurence, double K, int useChi, boolean deleteStopWords){
         this.useNonBayesChi = useNonBayesChi;
         this.minimalOccurence = minimalOccurence;
         this.minimalDocumentOccurence = minimalDocumentOccurence;
         this.K = K;
         this.useChi = useChi;
+        this.deleteStopWords = deleteStopWords;
+    }
+
+    public boolean deleteStopWords(){
+        return deleteStopWords;
     }
 
     public boolean getUseNonBayesChi() {
