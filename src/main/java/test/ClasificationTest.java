@@ -17,40 +17,55 @@ public class ClasificationTest {
 
 
     public static void main(String[] args) {
-        featureObject noFeatureK1 = new featureObject(false, -1, -1, 1);
-        featureObject noFeatureKhalf = new featureObject(false, -1, -1, 0.5);
-        featureObject removeUncommon = new featureObject(false, 2, 2, 1);
-        featureObject useChi = new featureObject(true, -1, -1, 1);
-        featureObject useChiRemoveUncommon = new featureObject(true, 2, 2, 1);
+        featureObject noFeatureK1 = new featureObject(false, -1, -1, 1, -1);
+        featureObject noFeatureKhalf = new featureObject(false, -1, -1, 0.5, -1);
+        featureObject removeUncommon = new featureObject(false, 2, 2, 1, -1);
+        featureObject useChi = new featureObject(false, -1, -1, 1, 0);
+        featureObject useChiRemoveUncommon = new featureObject(false, 2, 2, 1, 0);
+        featureObject useChiWithN1000 = new featureObject(false, 2, 2, 1, 1000);
+        featureObject useChiWithN500 = new featureObject(false, 2, 2, 1, 500);
+        featureObject useOwnChi = new featureObject(true, 2, 2, 1, 0);
 
         List<String> toDeleteMail = new ArrayList<>();
         toDeleteMail.add("Subject:");
         new Builder2("mail_bb", toDeleteMail);
         System.out.println("Results mail:");
-        procesTestMap("mail_test", noFeatureK1);
-        println();
-        procesTestMap("mail_test", noFeatureKhalf);
-        println();
-        procesTestMap("mail_test", removeUncommon);
-        println();
+//        procesTestMap("mail_test", noFeatureK1);
+//        println();
+//        procesTestMap("mail_test", noFeatureKhalf);
+//        println();
+//        procesTestMap("mail_test", removeUncommon);
+//        println();
         procesTestMap("mail_test", useChi);
         println();
+        procesTestMap("mail_test", useChiWithN1000);
+        println();
+        procesTestMap("mail_test", useChiWithN500);
+        println();
         procesTestMap("mail_test", useChiRemoveUncommon);
+        println();
+        procesTestMap("mail_test", useOwnChi);
 
-        System.out.println("");
-        System.out.println("");
-        new Builder2("blogs_bb", null);
-        new DataManager2();
-        System.out.println("Results blogs:");
-        procesTestMap("blogs_test", noFeatureK1);
-        println();
-        procesTestMap("blogs_test", noFeatureKhalf);
-        println();
-        procesTestMap("blogs_test", removeUncommon);
-        println();
-        procesTestMap("blogs_test", useChi);
-        println();
-        procesTestMap("blogs_test", useChiRemoveUncommon);
+//        System.out.println("");
+//        System.out.println("");
+//        new Builder2("blogs_bb", null);
+//        new DataManager2();
+//        System.out.println("Results blogs:");
+//        procesTestMap("blogs_test", noFeatureK1);
+//        println();
+//        procesTestMap("blogs_test", noFeatureKhalf);
+//        println();
+//        procesTestMap("blogs_test", removeUncommon);
+//        println();
+//        procesTestMap("blogs_test", useChi);
+//        println();
+//        procesTestMap("blogs_test", useChiWithN1000);
+//        println();
+//        procesTestMap("blogs_test", useChiWithN500);
+//        println();
+//        procesTestMap("blogs_test", useChiRemoveUncommon);
+//        println();
+//        procesTestMap("blogs_test", useOwnChi);
 
 
     }

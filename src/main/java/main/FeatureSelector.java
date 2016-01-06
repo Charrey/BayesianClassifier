@@ -55,7 +55,7 @@ public class FeatureSelector {
                 int N00 = manager.getClassCountExceptClass(c) - N10;
                 int N01 = manager.getClassCount(c) - N11;
                 double chi2 = (double)totalDocumentCount*Math.pow(N11 * N00 - N10 * N01, 2) / ((N11+N01)*(N11+N10)*(N10+N00)*(N01+N00));
-                System.out.println(chi2);
+                //System.out.println(chi2);
                 if(chi2>10.83){
                     //words.add(w);
                     if(w.getCountOfClass(c)==0){

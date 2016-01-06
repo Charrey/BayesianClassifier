@@ -110,11 +110,19 @@ public final class MathManager {
     }
 
     public static double getProbWordGivenClass(Word w, int sentenceLength, String c, DataManager2 manager, double K){
-        return ((double)w.getCountOfClass(c) + K)/(manager.getWordcountClass(c)+K*sentenceLength);
+        double prob = ((double)w.getCountOfClass(c) + K)/(manager.getWordcountClass(c)+K*sentenceLength);
+        if(prob<=0){
+            System.err.println("Chance P(Word|C) is 0 or lower");
+        }
+        return prob;
     }
 
     public static double getProbClass(String c, DataManager2 manager){
-        return (double) manager.getClassCount(c) / manager.getTotalDocumentCount();
+        double prob = (double) manager.getClassCount(c) / manager.getTotalDocumentCount();
+        if(prob<=0){
+            System.err.println("Chance P(C) is 0 or lower");
+        }
+        return prob;
     }
 
     public static HashMap<String, Double> getProbWordGivenClass(Word w, int sentenceLength, List<String> classes, DataManager2 manager, double K){
@@ -150,25 +158,49 @@ public final class MathManager {
             List<Word> featureList = featuresPerClass.get(c);
             double probWords = 0; // = P(Words)
             int count = 0;
-            for(Word word : featureList){
-                // calculating P(Words|C=c) for each word in the document and the featureset per class
-                if(sentenceList.contains(word.getWord())){
-                    double probWordGivenClass = getProbWordGivenClass(word, length, c, manager, K);
-                    if(probWordGivenClass==0){
-                        System.err.println("Prob of word: "+word.getWord()+" in class: "+c+" is zero "+word.getJSON());
-                    }
-                    if(result.get(c)!=null) {
-                        result.put(c, result.get(c) + Math.log(probWordGivenClass));
-                    }else{
-                        result.put(c, Math.log(probWordGivenClass));
-                    }
-                    count++;
-                    double probWord = getProbWord(word, manager);
-//                System.out.println(probWord);
-                    probWords += Math.log(probWord);
-                }
 
+//            for(Word word : featureList){
+//                // calculating P(Words|C=c) for each word in the document and the featureset per class
+//                if(sentenceList.contains(word.getWord())){
+//                    double probWordGivenClass = getProbWordGivenClass(word, length, c, manager, K);
+//                    if(probWordGivenClass==0){
+//                        System.err.println("Prob of word: "+word.getWord()+" in class: "+c+" is zero "+word.getJSON());
+//                    }
+//                    if(result.get(c)!=null) {
+//                        result.put(c, result.get(c) + Math.log(probWordGivenClass));
+//                    }else{
+//                        result.put(c, Math.log(probWordGivenClass));
+//                    }
+//                    count++;
+//                    double probWord = getProbWord(word, manager);
+////                System.out.println(probWord);
+//                    probWords += Math.log(probWord);
+//                }
+//
+//            }
+
+            for(String word:sentenceList){
+                Word w = manager.getWord(word);
+                if(!featureList.contains(w)){
+                    w = new Word(word);
+                }
+                double probWordGivenClass = getProbWordGivenClass(w, length, c, manager, K);
+                if(probWordGivenClass==0){
+                    System.err.println("Prob of word: "+w.getWord()+" in class: "+c+" is zero "+w.getJSON());
+                }
+                if(result.get(c)!=null) {
+                    result.put(c, result.get(c) + Math.log(probWordGivenClass));
+                }else{
+                    result.put(c, Math.log(probWordGivenClass));
+                }
+                count++;
+                double probWord = getProbWord(w, manager);
+//                System.out.println(probWord);
+                probWords += Math.log(probWord);
             }
+
+
+
 //            System.out.println("Class: "+c+" amount of words in feature and document: "+count);
             //calculating P(Words|C=c)/P(Words)
 //            System.out.println("Prob of words is: "+probWords+ " prob of words given class is: "+result.get(c));
@@ -185,7 +217,8 @@ public final class MathManager {
     /**
      *
      * @param s the document need to be classified
-     * @param featurueList the list of words that need to be used.
+     * @param featurueList the list of words that need to be used with the string value of the word as key and the word object
+     *                     as value.
      * @return hashmap containing the name of the class as key and the probabilite as value.
      */
     public static HashMap<String, Double> getProbSentenceFeatureList(String[] s, HashMap<String, Word> featurueList, Double K){

@@ -5,6 +5,7 @@ import org.json.JSONObject;
 
 import java.text.Normalizer;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by Administrator on 25-11-2015.
@@ -15,6 +16,15 @@ public class Word {
     private HashMap<String, Integer> counts = new HashMap<>();
     private HashMap<String, Integer> doccounts = new HashMap<>();
 
+
+    public Word(String word){
+        this.word = word;
+        List<String> classes = DataManager2.INSTANCE.getClasses();
+        for(String c:classes){
+            counts.put(c, 0);
+            doccounts.put(c, 0);
+        }
+    }
 
     public Word(String word, HashMap<String, Integer> map){
         this.word = word;
@@ -101,7 +111,7 @@ public class Word {
 
     @Override
     public boolean equals(Object word) {
-        if (word instanceof Word && ((Word) word).word.equals(word)) {
+        if (word instanceof Word && ((Word) word).getWord().equals(this.word)) {
             return true;
         }
         return false;
