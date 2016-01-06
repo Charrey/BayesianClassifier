@@ -30,6 +30,7 @@ public class ClasificationTest {
         List<String> toDeleteMail = new ArrayList<>();
         toDeleteMail.add("Subject:");
         new Builder2("mail_bb", toDeleteMail);
+        new DataManager2();
         System.out.println("Results mail:");
         procesTestMap("mail_test", noFeatureK1);
         println();

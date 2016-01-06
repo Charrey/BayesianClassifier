@@ -3,11 +3,10 @@ package test;
 
 
 
-import main.DataManager2;
-import main.FeatureSelector;
-import main.Word;
+import main.*;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -46,6 +45,11 @@ public class Test {
 //                }
 //            }
 //        }
+        List<String> toDeleteMail = new ArrayList<>();
+        toDeleteMail.add("Subject:");
+        new Builder2("mail_bb", toDeleteMail);
+        new DataManager2();
+        FeatureSelector.getChiWordList(DataManager2.INSTANCE.getWordList());
     }
 
 
