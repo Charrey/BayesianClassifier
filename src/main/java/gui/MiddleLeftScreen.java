@@ -10,6 +10,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.io.File;
 import java.util.LinkedList;
 
@@ -26,6 +28,7 @@ public class MiddleLeftScreen extends JPanel{
     JLabel build_folder = new JLabel("No build folder selected.");
 
     JCheckBox use_chi = new JCheckBox("Use Chi Squared");
+    JCheckBox remove_stop = new JCheckBox("Ignore Stop Words");
 
     JLabel min_occur_label = new JLabel("Minimal occurance:");
     JTextField min_occur = new JTextField();
@@ -73,7 +76,13 @@ public class MiddleLeftScreen extends JPanel{
         use_chi.setPreferredSize(new Dimension(800,componentsize));
         use_chi.setMaximumSize(new Dimension(800, componentsize));
         use_chi.setFont(font);
+
         add(use_chi);
+
+        remove_stop.setPreferredSize(new Dimension(800, componentsize));
+        remove_stop.setMaximumSize(new Dimension(800, componentsize));
+        remove_stop.setFont(font);
+        add(remove_stop);
 
        // add(Box.createVerticalStrut(vgap));
 
@@ -146,9 +155,15 @@ public class MiddleLeftScreen extends JPanel{
                     if (classify_file.isFile()) {
                     String content = DataManager2.readFile(classify_file);
                         MainFrame.get().log("Classifying File:\n"+content);
-                        featureObject feature = new featureObject(use_chi.isSelected(), Integer.parseInt(min_occur.getText()),Integer.parseInt(min_doc_occur.getText()), Integer.parseInt(k.getText()), Integer.parseInt(chivalue.getText()) );
+                        featureObject feature = new featureObject(use_chi.isSelected(), Integer.parseInt(min_occur.getText()),Integer.parseInt(min_doc_occur.getText()), Integer.parseInt(k.getText()), Integer.parseInt(chivalue.getText()), remove_stop.isSelected() );
+
+
                         String classification = MathManager.getClassificationOfDocument(content, feature, null);
+                        MainFrame.lastchecked = content;
                         MainFrame.get().log("Classified as: \""+classification+"\". For correction, please input the correct classification in the console.");
+
+                    } else {
+                        MainFrame.get().log("You can't classify folders for now. Please don't do that.");
 
                     }
                 } else {
@@ -159,9 +174,11 @@ public class MiddleLeftScreen extends JPanel{
         add(classify);
 
         use_chi.setEnabled(false);
+        remove_stop.setEnabled(false);
         min_occur.setEnabled(false);
         min_doc_occur.setEnabled(false);
         k.setEnabled(false);
+        chivalue.setEnabled(false);
         build.setEnabled(false);
         classify.setEnabled(false);
 
@@ -172,18 +189,22 @@ public class MiddleLeftScreen extends JPanel{
     public void setClassifyFile(File file) {
         classify.setEnabled(true);
         use_chi.setEnabled(true);
+        remove_stop.setEnabled(true);
         min_occur.setEnabled(true);
         min_doc_occur.setEnabled(true);
         k.setEnabled(true);
+        chivalue.setEnabled(true);
 
         if (file==null) {
             classifying_name.setText("No classification file/folder selected.");
             classifying_name.setForeground(Color.gray);
             classify_file = null;
             use_chi.setEnabled(false);
+            remove_stop.setEnabled(false);
             min_occur.setEnabled(false);
             min_doc_occur.setEnabled(false);
             k.setEnabled(false);
+            chivalue.setEnabled(false);
             classify.setEnabled(false);
             return;
         }
@@ -197,18 +218,22 @@ public class MiddleLeftScreen extends JPanel{
     public void setClassifyFolder(File folder) {
         classify.setEnabled(true);
         use_chi.setEnabled(true);
+        remove_stop.setEnabled(true);
         min_occur.setEnabled(true);
         min_doc_occur.setEnabled(true);
         k.setEnabled(true);
+        chivalue.setEnabled(true);
 
         if (folder==null) {
             classifying_name.setText("No classification file/folder selected.");
             classifying_name.setForeground(Color.gray);
             classify_file = null;
             use_chi.setEnabled(false);
+            remove_stop.setEnabled(false);
             min_occur.setEnabled(false);
             min_doc_occur.setEnabled(false);
             k.setEnabled(false);
+            chivalue.setEnabled(false);
             classify.setEnabled(false);
             return;
         }
@@ -225,20 +250,17 @@ public class MiddleLeftScreen extends JPanel{
             build_folder.setText("No build folder selected.");
             build_folder.setForeground(Color.gray);
             build_file = null;
-            use_chi.setEnabled(false);
-            min_occur.setEnabled(false);
-            min_doc_occur.setEnabled(false);
-            k.setEnabled(false);
             build.setEnabled(false);
-            classify.setEnabled(false);
             return;
         }
         build_file = folder;
         if (classify_file!=null) {
             use_chi.setEnabled(true);
+            remove_stop.setEnabled(true);
             min_occur.setEnabled(true);
             min_doc_occur.setEnabled(true);
             k.setEnabled(true);
+            chivalue.setEnabled(true);
             build.setEnabled(true);
         }
         build_folder.setText("Build folder: "+folder.getAbsolutePath());
@@ -247,7 +269,7 @@ public class MiddleLeftScreen extends JPanel{
     }
 
     public boolean hasValidTextInput() {
-        return representsInteger(min_occur.getText()) && representsInteger(min_doc_occur.getText()) && representsInteger(k.getText());
+        return representsInteger(min_occur.getText()) && representsInteger(min_doc_occur.getText()) && representsInteger(k.getText()) && representsInteger(chivalue.getText());
     }
 
     public static boolean representsInteger(String test) {

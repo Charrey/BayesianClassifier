@@ -1,11 +1,14 @@
+/*
 package gui;
 
 import javax.swing.*;
 import java.awt.*;
 
+*/
 /**
  * Created by poesd_000 on 05/01/2016.
- */
+ *//*
+
 public class ButtonBlock extends JPanel{
 
     public ButtonBlock(int horizontalgap, int verticalgap, JButton button) {
@@ -21,3 +24,4 @@ public class ButtonBlock extends JPanel{
 
 
 }
+*/

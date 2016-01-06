@@ -1,9 +1,14 @@
 package gui;
 
+import main.DataManager2;
+import main.Word;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by poesd_000 on 06/01/2016.
@@ -40,10 +45,16 @@ public class MiddleRightScreen extends JPanel {
             jta.setMargin(new Insets(30,30,30,30));
             content.add(jta);
             this.setPreferredSize(new Dimension(800,500));
-            addText("hoi");
+            addText("Initialized.");
         }
         public void addText(String text) {
-            jta.setText(jta.getText()+"\n"+text);
+
+
+            Date dNow = new Date( );
+            SimpleDateFormat ft = new SimpleDateFormat ("HH:mm:ss");
+
+
+            jta.setText(jta.getText()+"\n"+"["+ft.format(dNow)+"]      "+text);
             content.setPreferredSize(jta.getPreferredSize());
         }
     }
@@ -61,6 +72,17 @@ public class MiddleRightScreen extends JPanel {
             this.setPreferredSize(new Dimension(1920, 50));
             this.setMaximumSize(new Dimension(1920, 50));
             this.setMinimumSize(new Dimension(1920, 50));
+            button.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    try {
+                        DataManager2.INSTANCE.addDocumentToTrainingsset(Word.sanitize(MainFrame.lastchecked), field.getText(), true);
+                        MainFrame.get().log("Succesfully learned.");
+                    } catch (NullPointerException e1) {
+                        MainFrame.get().log("No classification yet.");
+                    }
+                }
+            });
         }
     }
 

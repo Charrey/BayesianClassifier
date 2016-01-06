@@ -8,11 +8,14 @@ import java.awt.*;
  */
 public class MainFrame extends JFrame {
 
+
+   public static String lastchecked = null;
+
+
+
     private static MainFrame mf;
 
     private final TopBar tp;
-    //private final UnderBar ub;
-
     private final JPanel middlescreen = new JPanel();
     private final MiddleLeftScreen mls;
     private final MiddleRightScreen mrs;
@@ -38,6 +41,7 @@ public class MainFrame extends JFrame {
         this.setVisible(true);
         this.setSize(Toolkit.getDefaultToolkit().getScreenSize());
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setExtendedState(Frame.MAXIMIZED_BOTH);
     }
 
     public static MainFrame get() {
