@@ -16,6 +16,8 @@ public class TopBar extends JPanel {
 
     private JButton FILE;
 
+
+
     public TopBar() {
         this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 
@@ -33,7 +35,7 @@ public class TopBar extends JPanel {
                 }
             }
         }));
-        popup.add(new JMenuItem(new AbstractAction("Classify Folder") {
+      /*  popup.add(new JMenuItem(new AbstractAction("Classify Folder") {
             public void actionPerformed(ActionEvent e) {
                 final JFileChooser fc = new JFileChooser();
                 fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
@@ -47,7 +49,7 @@ public class TopBar extends JPanel {
                     }
                 }
             }
-        }));
+        }));*/
         popup.add(new JMenuItem(new AbstractAction("Set build source") {
             public void actionPerformed(ActionEvent e) {
                 final JFileChooser fc = new JFileChooser();

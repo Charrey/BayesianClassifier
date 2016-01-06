@@ -159,6 +159,9 @@ public final class MathManager {
         HashMap<String, Double> result = new HashMap<>();
         List<String> classes = DataManager2.INSTANCE.getClasses();
         DataManager2 manager = DataManager2.INSTANCE;
+        for(String c:classes){
+            result.put(c, 0.0);
+        }
         List<String> sentenceList = Arrays.asList(s);
         int length = s.length;
 
@@ -193,7 +196,12 @@ public final class MathManager {
 //            System.out.println("Class: "+c+" amount of words in feature and document: "+count);
             //calculating P(Words|C=c)/P(Words)
 //            System.out.println("Prob of words is: "+probWords+ " prob of words given class is: "+result.get(c));
-            result.put(c, result.get(c)-probWords);
+            //System.out.println("sadasd"+c==null);
+            //System.out.println("sadasdsadasffdaasdasd"+result==null);
+            //System.out.println(c);
+            //System.out.println(probWords);
+            //System.out.println(result.get(c));
+            result.put(c, result.get(c) - probWords);
             //calculating P(C=c)*P(Words|C=c)/P(Words)
             double probClass = getProbClass(c, manager);
             //System.out.println("prob of class: "+c+" is:"+Math.log(probClass));

@@ -1,7 +1,9 @@
 package gui;
 
 import main.DataManager2;
+import main.MathManager;
 import main.Word;
+import main.featureObject;
 
 import javax.swing.*;
 import java.awt.*;
@@ -46,6 +48,7 @@ public class MiddleRightScreen extends JPanel {
             content.add(jta);
             this.setPreferredSize(new Dimension(800,500));
             addText("Initialized.");
+            addText("Type \"classify <text>\" in the console to classify without submitting a file.");
         }
         public void addText(String text) {
 
@@ -77,10 +80,61 @@ public class MiddleRightScreen extends JPanel {
                 public void actionPerformed(ActionEvent e) {
                     try {
                         DataManager2.INSTANCE.addDocumentToTrainingsset(Word.sanitize(MainFrame.lastchecked), field.getText(), true);
+                        MainFrame.lastchecked=null;
+
                         MainFrame.get().log("Succesfully learned.");
                     } catch (NullPointerException e1) {
-                        MainFrame.get().log("No classification yet.");
+                        MainFrame.get().log("No classification done to use that feedback with");
+                        if (field.getText().toLowerCase().startsWith("classify ")) {
+
+
+                            MainFrame.get().log("Classifying Text:\n"+field.getText());
+
+                            boolean chi = MainFrame.get().getMiddleLeftScreen().use_chi.isSelected();
+                            String min_occur = MainFrame.get().getMiddleLeftScreen().min_occur.getText();
+                            String min_doc_occur = MainFrame.get().getMiddleLeftScreen().min_doc_occur.getText();
+                            String k = MainFrame.get().getMiddleLeftScreen().k.getText();
+                            String chivalue = MainFrame.get().getMiddleLeftScreen().chivalue.getText();
+
+                            if (min_occur == null || !MiddleLeftScreen.representsInteger(min_occur)) {
+                                MainFrame.get().log("Min Occurance input invalid. Defaulting to 0.");
+                                min_occur = "0";
+                            }
+
+                            if (min_doc_occur == null || !MiddleLeftScreen.representsInteger(min_doc_occur)) {
+                                MainFrame.get().log("Min Document Occurance input invalid. Defaulting to 0.");
+                                min_doc_occur = "0";
+                            }
+
+                            if (k == null || !MiddleLeftScreen.representsInteger(k)) {
+                                MainFrame.get().log("K input invalid. Defaulting to 1.");
+                                k = "1";
+                            }
+
+                            if (chivalue == null || !MiddleLeftScreen.representsInteger(chivalue)) {
+                                MainFrame.get().log("Chi value input invalid. Defaulting to -1.");
+                                chivalue = "-1";
+                            }
+
+                            featureObject feature = new featureObject(MainFrame.get().getMiddleLeftScreen().use_chi.isSelected(),
+                                    Integer.parseInt(min_occur),
+                                    Integer.parseInt(min_doc_occur),
+                                    Integer.parseInt(k),
+                                    Integer.parseInt(chivalue),
+                                    MainFrame.get().getMiddleLeftScreen().remove_stop.isSelected() );
+
+                            System.out.println(feature);
+
+
+                            String classification = MathManager.getClassificationOfDocument(field.getText().substring("classify ".length()), feature, null);
+                            MainFrame.lastchecked = field.getText().substring("classify ".length());
+                            MainFrame.get().log("Classified as: \""+classification+"\". For correction, please input the correct classification in the console.");
+
+
+
+                        }
                     }
+                    field.setText("");
                 }
             });
         }

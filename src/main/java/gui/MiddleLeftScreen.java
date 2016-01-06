@@ -40,7 +40,7 @@ public class MiddleLeftScreen extends JPanel{
     JTextField k = new JTextField();
 
     JLabel chivalue_label = new JLabel("Chi Value");
-    private JTextField chivalue = new JTextField();
+    public JTextField chivalue = new JTextField();
 
     private JButton build = new JButton("Build");
     private JButton classify = new JButton("Classify");
@@ -244,7 +244,7 @@ public class MiddleLeftScreen extends JPanel{
     }
 
     public void setBuildFolder(File folder) {
-
+        build.setEnabled(true);
 
         if (folder==null) {
             build_folder.setText("No build folder selected.");

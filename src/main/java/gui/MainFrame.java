@@ -51,6 +51,10 @@ public class MainFrame extends JFrame {
         return mf;
     }
 
+    public MiddleLeftScreen getMiddleLeftScreen() {
+        return mls;
+    }
+
     public MiddleLeftScreen getMiddleScreen() {
         return mls;
     }
