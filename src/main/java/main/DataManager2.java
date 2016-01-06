@@ -99,7 +99,7 @@ public class DataManager2 {
      * @param c the corresponding class of the docuement
      * @param writeToDisk if the trainingsset needs to be written back to the output files.
      */
-    public void addDocumentToSet(String[] document, String c, boolean writeToDisk){
+    public void addDocumentToTrainingsset(String[] document, String c, boolean writeToDisk){
         for(int i=0; i<document.length; i++){
             Word w = words.get(document[i]);
             if(w==null){

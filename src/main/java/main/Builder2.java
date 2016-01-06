@@ -23,7 +23,12 @@ public class Builder2 {
     private HashMap<String, Integer> newWordMap = new HashMap<>();
 
 
-
+    /**
+     *
+     * @param path to the folder containing the class folders which contain the training files
+     * @param toBeDeleted list of words needed to be deleted before building the trainingsset. These words are unsanitized.
+     *                    give null if no words need to be ignored.
+     */
     public Builder2(String path, List<String> toBeDeleted){
         try {
             File outputFolder = new File("output");

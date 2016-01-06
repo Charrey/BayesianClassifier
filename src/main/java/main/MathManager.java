@@ -185,7 +185,7 @@ public final class MathManager {
     /**
      *
      * @param s the document need to be classified
-     * @param featurueList the list of word that need to be used.
+     * @param featurueList the list of words that need to be used.
      * @return hashmap containing the name of the class as key and the probabilite as value.
      */
     public static HashMap<String, Double> getProbSentenceFeatureList(String[] s, HashMap<String, Word> featurueList, Double K){
