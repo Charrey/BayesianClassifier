@@ -30,12 +30,12 @@ public class ClasificationTest {
         toDeleteMail.add("Subject:");
         new Builder2("mail_bb", toDeleteMail);
         System.out.println("Results mail:");
-//        procesTestMap("mail_test", noFeatureK1);
-//        println();
-//        procesTestMap("mail_test", noFeatureKhalf);
-//        println();
-//        procesTestMap("mail_test", removeUncommon);
-//        println();
+        procesTestMap("mail_test", noFeatureK1);
+        println();
+        procesTestMap("mail_test", noFeatureKhalf);
+        println();
+        procesTestMap("mail_test", removeUncommon);
+        println();
         procesTestMap("mail_test", useChi);
         println();
         procesTestMap("mail_test", useChiWithN1000);
@@ -46,26 +46,26 @@ public class ClasificationTest {
         println();
         procesTestMap("mail_test", useOwnChi);
 
-//        System.out.println("");
-//        System.out.println("");
-//        new Builder2("blogs_bb", null);
-//        new DataManager2();
-//        System.out.println("Results blogs:");
-//        procesTestMap("blogs_test", noFeatureK1);
-//        println();
-//        procesTestMap("blogs_test", noFeatureKhalf);
-//        println();
-//        procesTestMap("blogs_test", removeUncommon);
-//        println();
-//        procesTestMap("blogs_test", useChi);
-//        println();
-//        procesTestMap("blogs_test", useChiWithN1000);
-//        println();
-//        procesTestMap("blogs_test", useChiWithN500);
-//        println();
-//        procesTestMap("blogs_test", useChiRemoveUncommon);
-//        println();
-//        procesTestMap("blogs_test", useOwnChi);
+        System.out.println("");
+        System.out.println("");
+        new Builder2("blogs_bb", null);
+        new DataManager2();
+        System.out.println("Results blogs:");
+        procesTestMap("blogs_test", noFeatureK1);
+        println();
+        procesTestMap("blogs_test", noFeatureKhalf);
+        println();
+        procesTestMap("blogs_test", removeUncommon);
+        println();
+        procesTestMap("blogs_test", useChi);
+        println();
+        procesTestMap("blogs_test", useChiWithN1000);
+        println();
+        procesTestMap("blogs_test", useChiWithN500);
+        println();
+        procesTestMap("blogs_test", useChiRemoveUncommon);
+        println();
+        procesTestMap("blogs_test", useOwnChi);
 
 
     }
