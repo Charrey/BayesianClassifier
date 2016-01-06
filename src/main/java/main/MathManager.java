@@ -20,7 +20,13 @@ public final class MathManager {
      * @return the class according to the classifier.
      */
     public static String getClassificationOfDocument(String document, featureObject obj, List<String> toIgnore){
-        String[] array = deleteWordsFromArray(Word.sanitizeString(document), toIgnore).split("\\s+");
+        String[] array;
+        if(obj.deleteStopWords()){
+            String doc = deleteWordsFromArray(Word.sanitizeString(document), toIgnore);
+            array = deleteWordsFromArray(doc, FeatureSelector.STOPWORDS).split("\\s+");
+        }else{
+            array = deleteWordsFromArray(Word.sanitizeString(document), toIgnore).split("\\s+");
+        }
         return obj.getClassification(array);
     }
 

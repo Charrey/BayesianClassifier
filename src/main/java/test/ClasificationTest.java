@@ -17,14 +17,14 @@ public class ClasificationTest {
 
 
     public static void main(String[] args) {
-        featureObject noFeatureK1 = new featureObject(false, -1, -1, 1, -1);
-        featureObject noFeatureKhalf = new featureObject(false, -1, -1, 0.5, -1);
-        featureObject removeUncommon = new featureObject(false, 2, 2, 1, -1);
-        featureObject useChi = new featureObject(false, -1, -1, 1, 0);
-        featureObject useChiRemoveUncommon = new featureObject(false, 2, 2, 1, 0);
-        featureObject useChiWithN1000 = new featureObject(false, 2, 2, 1, 1000);
-        featureObject useChiWithN500 = new featureObject(false, 2, 2, 1, 500);
-        featureObject useOwnChi = new featureObject(true, 2, 2, 1, 0);
+        featureObject noFeatureK1 = new featureObject(false, -1, -1, 1, -1, false);
+        featureObject noFeatureKhalf = new featureObject(false, -1, -1, 0.5, -1, false);
+        featureObject removeUncommon = new featureObject(false, 2, 2, 1, -1, false);
+        featureObject useChi = new featureObject(false, -1, -1, 1, 0, false);
+        featureObject useChiRemoveUncommon = new featureObject(false, 2, 2, 1, 0, false);
+        featureObject useChiWithN1000 = new featureObject(false, 2, 2, 1, 1000, false);
+        featureObject useChiWithN500 = new featureObject(false, 2, 2, 1, 500, false);
+        featureObject useOwnChi = new featureObject(true, 2, 2, 1, 0, false);
 
         List<String> toDeleteMail = new ArrayList<>();
         toDeleteMail.add("Subject:");
@@ -139,7 +139,8 @@ public class ClasificationTest {
 //        return MathManager.getClassification(MathManager.getProbSentence(Word.sanitize(content), featureList)).equals(c);
 //        boolean result = MathManager.getClassification(Word.sanitize(content)).equals(c); //old method
         //boolean result = MathManager.getClassification(MathManager.getProbSentence(Word.sanitize(content), featureList, 1)).equals(c);
-        boolean result = featureobj.getClassification(Word.sanitize(content)).equals(c);
+//        boolean result = featureobj.getClassification(Word.sanitize(content)).equals(c);
+        boolean result = MathManager.getClassificationOfDocument(content, featureobj, null).equals(c);
         putResultMap(c, resultMap, result);
     }
 
@@ -162,6 +163,7 @@ public class ClasificationTest {
         }
         return null;
     }
+
 
 
 }

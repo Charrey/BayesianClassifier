@@ -4,10 +4,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by René Boschma on 7-12-2015.
@@ -29,7 +26,7 @@ public class Builder2 {
      * @param toBeDeleted list of words needed to be deleted before building the trainingsset. These words are unsanitized.
      *                    give null if no words need to be ignored.
      */
-    public Builder2(String path, List<String> toBeDeleted){
+    public Builder2(String path, List<String> toBeDeleted) throws IllegalStateException{
         try {
             File outputFolder = new File("output");
             outputFolder.mkdir();
@@ -44,6 +41,7 @@ public class Builder2 {
                 deleteSubject = true;
                 this.toDelete = toBeDeleted;
             }
+
 
             File root = new File(path);
             File[] inroot = root.listFiles();
